@@ -22,15 +22,22 @@ public class V2IntakeShooterTest extends OpMode {
     DcMotor transfer;
     DcMotorEx leftOuttake, rightOuttake;
     DcMotor leftFront, leftBack, rightFront, rightBack;
+    public Servo servo;
     //Initialize Variables
     /*
     (Button) Initialize Period, before you press start on your program.
      */
-    public static double ticksPerSecond = 1248.67;
-    public Servo servo;
-    public static double servoPos = 0.1867;
-    public static double transferPower = 0.8;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(2000, 0, 0.00367, 43);
+    public static double ticksPerSecond = 1250;
+    //1500 is far
+    //1250 is close
+    public static double servoPos = 0.393;
+    //0.38 is far
+    //0.393 is close
+    public double minimum = 0;
+    //0 is close
+    //1480 is far
+    public static double transferPower = 1;
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(345, 0.00042, 0.01, 18.4);
 
     public void init() {
 
@@ -44,10 +51,10 @@ public class V2IntakeShooterTest extends OpMode {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
         //set hardware map names (aka what the controller understands)
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         transfer = hardwareMap.get(DcMotorEx.class, "transfer");
@@ -72,16 +79,14 @@ public class V2IntakeShooterTest extends OpMode {
 
     public void loop() {
         Drive();
-        Intake();
-        Transfer();
         shootTest();
     }
     private void Drive() {
         double max;
 
         double axial = -gamepad1.left_stick_y;
-        double lateral = -gamepad1.left_stick_x;
-        double yaw = -gamepad1.right_stick_x;
+        double lateral = gamepad1.left_stick_x;
+        double yaw = gamepad1.right_stick_x;
         double drivePower = 0.95 - (0.6 * gamepad1.left_trigger);
 
         double leftFrontPower = axial + lateral + yaw;
@@ -104,44 +109,49 @@ public class V2IntakeShooterTest extends OpMode {
         leftFront.setPower(leftFrontPower*drivePower);
         leftBack.setPower(leftBackPower*drivePower);
     }
-    private void Intake() {
-        double intakePower = 1;
-        if (gamepad1.right_trigger > 0.15) {
-            intake.setPower(intakePower);
-        } else if (gamepad1.x) {
-            intake.setPower(-intakePower);
-        } else {
-            intake.setPower(0);
-        }
-    }
 
-    private void Transfer() {
-        if (gamepad1.y) {
-            transfer.setPower(transferPower);
-        } else if (gamepad1.right_bumper) {
-            transfer.setPower(-transferPower);
-        } else {
-            transfer.setPower(0);
-        }
-    }
     public void shootTest() {
         servo.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
-        if (gamepad1.x) {
-            leftOuttake.setVelocity(-ticksPerSecond);
-            rightOuttake.setVelocity(-ticksPerSecond);
+        leftOuttake.setVelocity(ticksPerSecond);
+        rightOuttake.setVelocity(ticksPerSecond);
+
+        /*
+        leftOuttake.setPower(outtakePower);
+        rightOuttake.setPower(outtakePower);
+        */
+        double intakePower = 1;
+
+        if (gamepad1.right_bumper) {
+            intake.setPower(intakePower);
+        } else if (gamepad1.y) {
+            intake.setPower(-intakePower);
         } else {
-            leftOuttake.setVelocity(ticksPerSecond);
-            rightOuttake.setVelocity(ticksPerSecond);
+            intake.setPower(0);
+        }
+        /*
+        if (ticksPerSecond<1350) {
+            minimum = 0;
+            maximum = 1330;
+        } else {
+            minimum = 1475;
+            maximum = 1575;
         }
 
-        telemetry.addData("Target Velocity", ticksPerSecond);
+         */
+
+        if (gamepad1.right_trigger > 0.15 && leftOuttake.getVelocity()>minimum) {
+            transfer.setPower(transferPower);
+        } else if (gamepad1.x) {
+            transfer.setPower(-transferPower);
+        } else {
+            transfer.setPower(0);
+        }
         telemetry.addData("Ticks/s", ticksPerSecond);
         telemetry.addData("Left Velocity", leftOuttake.getVelocity());
         telemetry.addData("Right Velocity", rightOuttake.getVelocity());
         telemetry.addData("Error", ticksPerSecond-leftOuttake.getVelocity());
         telemetry.update();
-
     }
 }

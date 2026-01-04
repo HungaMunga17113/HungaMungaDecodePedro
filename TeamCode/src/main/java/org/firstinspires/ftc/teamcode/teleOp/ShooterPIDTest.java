@@ -8,16 +8,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
+
 @Configurable
 @TeleOp
-@Disabled
+
 public class ShooterPIDTest extends OpMode {
 
     DcMotorEx leftOuttake, rightOuttake,intake,transfer;
-    public static double ticksPerSecond = 1420;
-    public static double transferPower = 0.55;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(42, 0, 0.0015, 14.915);
-    //Test f = 24.3158593995
+    public static double ticksPerSecond = 1250;
+    //1500 is far
+    //1250 is close
+    public static double servoPos = 0.393;
+    //0.38 is far
+    //0.393 is close
+    public double minimum = 0;
+    //0 is close
+    //1480 is far
+    public Servo servo;
+
+    public static double transferPower = 1;
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(345, 0.00042, 0.01, 18.4);
 
     public void init() {
         leftOuttake = hardwareMap.get(DcMotorEx.class, "leftOuttake");
@@ -32,6 +43,7 @@ public class ShooterPIDTest extends OpMode {
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         transfer.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        servo = hardwareMap.get(Servo.class, "Axon");
 
 
     }
@@ -43,7 +55,7 @@ public class ShooterPIDTest extends OpMode {
     }
 
     public void shootTest() {
-
+        servo.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(ticksPerSecond);
@@ -62,8 +74,19 @@ public class ShooterPIDTest extends OpMode {
         } else {
             intake.setPower(0);
         }
-        if (gamepad1.right_trigger > 0.15) {
-            transfer.setPower(transferPower);
+        /*
+        if (ticksPerSecond<1350) {
+            minimum = 0;
+            maximum = 1330;
+        } else {
+            minimum = 1475;
+            maximum = 1575;
+        }
+
+         */
+
+        if (gamepad1.right_trigger > 0.15 && leftOuttake.getVelocity()>minimum) {
+                transfer.setPower(transferPower);
         } else if (gamepad1.x) {
             transfer.setPower(-transferPower);
         } else {
