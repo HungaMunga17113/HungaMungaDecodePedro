@@ -37,7 +37,7 @@ public class V2IntakeShooterTest extends OpMode {
     //0 is close
     //1480 is far
     public static double transferPower = 1;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(345, 0.00042, 0.01, 18.4);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(329, 0.00035, 0.01, 18.4);
 
     public void init() {
 
@@ -123,9 +123,9 @@ public class V2IntakeShooterTest extends OpMode {
         */
         double intakePower = 1;
 
-        if (gamepad1.right_bumper) {
+        if (gamepad1.right_trigger > 0.15) {
             intake.setPower(intakePower);
-        } else if (gamepad1.y) {
+        } else if (gamepad1.x) {
             intake.setPower(-intakePower);
         } else {
             intake.setPower(0);
@@ -141,9 +141,9 @@ public class V2IntakeShooterTest extends OpMode {
 
          */
 
-        if (gamepad1.right_trigger > 0.15 && leftOuttake.getVelocity()>minimum) {
+        if (gamepad1.y && leftOuttake.getVelocity()>minimum) {
             transfer.setPower(transferPower);
-        } else if (gamepad1.x) {
+        } else if (gamepad1.right_bumper) {
             transfer.setPower(-transferPower);
         } else {
             transfer.setPower(0);

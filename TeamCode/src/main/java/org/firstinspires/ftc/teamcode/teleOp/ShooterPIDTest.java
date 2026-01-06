@@ -28,7 +28,7 @@ public class ShooterPIDTest extends OpMode {
     public Servo servo;
 
     public static double transferPower = 1;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(345, 0.00042, 0.01, 18.4);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(329, 0.00035, 0.01, 18.4);
 
     public void init() {
         leftOuttake = hardwareMap.get(DcMotorEx.class, "leftOuttake");
