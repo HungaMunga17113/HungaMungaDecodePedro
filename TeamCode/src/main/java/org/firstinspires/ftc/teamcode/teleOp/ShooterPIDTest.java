@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleOp;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -31,6 +33,8 @@ public class ShooterPIDTest extends OpMode {
     public static PIDFCoefficients coeffs = new PIDFCoefficients(329, 0.00035, 0.01, 18.4);
 
     public void init() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
         leftOuttake = hardwareMap.get(DcMotorEx.class, "leftOuttake");
         rightOuttake = hardwareMap.get(DcMotorEx.class, "rightOuttake");
         transfer = hardwareMap.get(DcMotorEx.class, "transfer");

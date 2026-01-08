@@ -17,7 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 //Must connect once to robot wifi using usb c to a cable
 public class Constants {
     //Panels Dashboard - http://192.168.43.1:8001/
-
         public static FollowerConstants followerConstants = new FollowerConstants()
                 .forwardZeroPowerAcceleration(-29.5064820365234)
                 .lateralZeroPowerAcceleration(-62.17077676823383)

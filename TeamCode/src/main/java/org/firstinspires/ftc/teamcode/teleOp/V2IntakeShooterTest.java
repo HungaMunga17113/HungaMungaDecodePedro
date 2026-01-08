@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleOp;
 
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -27,19 +29,20 @@ public class V2IntakeShooterTest extends OpMode {
     /*
     (Button) Initialize Period, before you press start on your program.
      */
-    public static double ticksPerSecond = 1250;
-    //1500 is far
+    public static double ticksPerSecond = 1515;
+    //1515 is far
     //1250 is close
-    public static double servoPos = 0.393;
-    //0.38 is far
+    public static double servoPos = 0.32;
+    //0.32 is far
     //0.393 is close
-    public double minimum = 0;
+    public static double minimum = 1500;
     //0 is close
-    //1480 is far
+    //1500 is far
     public static double transferPower = 1;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(329, 0.00035, 0.01, 18.4);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(335, 0, 0.0143, 18.3);
 
     public void init() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         leftFront  = hardwareMap.get(DcMotor.class, "leftFront");
         leftBack   = hardwareMap.get(DcMotor.class, "leftBack");
