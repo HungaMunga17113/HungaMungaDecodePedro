@@ -11,6 +11,19 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.pedroPathing.Tuning;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import com.pedropathing.control.FilteredPIDFCoefficients;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.follower.FollowerConstants;
+import com.pedropathing.ftc.FollowerBuilder;
+import com.pedropathing.ftc.drivetrains.MecanumConstants;
+import com.pedropathing.ftc.localization.constants.PinpointConstants;
+import com.pedropathing.paths.PathConstraints;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
@@ -19,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 @TeleOp
 public class V2IntakeShooterTest extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
+    Follower follower;
     //Sloth
     DcMotor intake;
     DcMotor transfer;
@@ -32,16 +46,17 @@ public class V2IntakeShooterTest extends OpMode {
     public static double ticksPerSecond = 1515;
     //1515 is far
     //1250 is close
-    public static double servoPos = 0.32;
+    public static double servoPos = 0.346;
     //0.32 is far
     //0.393 is close
-    public static double minimum = 1500;
+    public static double minimum = 1495;
     //0 is close
     //1500 is far
     public static double transferPower = 1;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(335, 0, 0.0143, 18.3);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.0146, 18.3);
 
     public void init() {
+
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         leftFront  = hardwareMap.get(DcMotor.class, "leftFront");
