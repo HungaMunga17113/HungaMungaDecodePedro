@@ -53,7 +53,7 @@ public class ShooterTest extends NextFTCOpMode {
         return new ParallelGroup(
                 Intakenf.INSTANCE.in(),
                 Transfernf.INSTANCE.out(),
-                Shooternf.INSTANCE.setVelocity(-1255)
+                Shooternf.INSTANCE.setShooterVel(-1255)
 
 
         );

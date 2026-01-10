@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Intakenf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Shooternf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Transfernf;
 
+
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
@@ -183,18 +184,16 @@ public class Blue12Auton extends NextFTCOpMode {
             return new ParallelGroup(
                     //INTAKE ALWAYS ON
                     Intakenf.INSTANCE.in(),
-
                     //MAIN SEQUENCE
                     new SequentialGroup(
 
                             //Preloads
                             new ParallelGroup(
-                                    new FollowPath(Shoot1, true)
-                                    ,
-
+                                    new FollowPath(Shoot1, true),
                                     baseState(),
                                     Shooternf.INSTANCE.close()
                             ),
+                            new Delay(1),
                             transferUpFor(1),
 
 
@@ -202,6 +201,8 @@ public class Blue12Auton extends NextFTCOpMode {
                             new ParallelGroup(
                                     new SequentialGroup(
                                             new FollowPath(Intake1),
+                                            new FollowPath(Gate),
+                                            new Delay(0.3),
                                             new FollowPath(Shoot2, true)
                                     )
                                     ,
@@ -241,14 +242,15 @@ public class Blue12Auton extends NextFTCOpMode {
         @Override
         public void onInit() {
             paths();
-            //set_hood().schedule();
-            //Shooternf.INSTANCE.idle();
+            set_hood().schedule();
+            Shooternf.INSTANCE.disable();
         }
         @Override
         public void onStartButtonPressed() {
+            Shooternf.INSTANCE.enable();
+
             autonomous().schedule();
 
-            //Shooternf.INSTANCE.close();
         }
 
 }

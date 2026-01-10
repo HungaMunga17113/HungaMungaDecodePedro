@@ -18,6 +18,7 @@ public class NfPIDTuner extends NextFTCOpMode {
         addComponents(
                 new SubsystemComponent(Hoodnf.INSTANCE, Shooternf.INSTANCE, Transfernf.INSTANCE, Intakenf.INSTANCE),
                 BulkReadComponent.INSTANCE,
+
                 BindingsComponent.INSTANCE
         );
     }

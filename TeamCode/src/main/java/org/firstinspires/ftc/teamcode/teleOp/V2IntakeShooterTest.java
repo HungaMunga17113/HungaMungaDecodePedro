@@ -52,7 +52,9 @@ public class V2IntakeShooterTest extends OpMode {
     public static double minimum = 1495;
     //0 is close
     //1500 is far
-    public static double transferPower = 1;
+    public static double transferPower = 0.85;
+    //1 is close
+    //0.85 is far
     public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.0146, 18.3);
 
     public void init() {

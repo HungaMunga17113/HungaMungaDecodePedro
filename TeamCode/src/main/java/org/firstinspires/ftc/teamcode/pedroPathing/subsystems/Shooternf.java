@@ -4,71 +4,107 @@ import com.bylazar.configurables.annotations.Configurable;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.controllable.RunToVelocity;
 import dev.nextftc.hardware.impl.MotorEx;
-import dev.nextftc.hardware.positionable.SetPosition;
-import dev.nextftc.hardware.powerable.SetPower;
+
 @Configurable
 public class Shooternf implements Subsystem {
     public static final Shooternf INSTANCE = new Shooternf();
     private Shooternf() { }
 
-    public MotorEx leftOuttake;
-    public MotorEx rightOuttake;
+    public MotorEx leftOuttake, rightOuttake;
     public MotorGroup shooter;
 
-    private static final ControlSystem closeShooter = ControlSystem.builder()
+    private final ControlSystem closeShooterController = ControlSystem.builder()
             .velPid(0.345, 0, 0.001)
             .basicFF(0.002)
             .build();
 
-    private static final ControlSystem farShooter = ControlSystem.builder()
-            .velPid(0.345, 0, 0.001)
-            .basicFF(0.002)
+    private final ControlSystem farShooterController = ControlSystem.builder()
+            .velPid(0.38, 0, 0.003)
+            .basicFF(0.006)
             .build();
-    private static final ControlSystem setShooter = ControlSystem.builder()
-            .velPid(0.345, 0, 0.001)
-            .basicFF(0.002)
-            .build();
+
+    private boolean enabled = false;
+
     private enum ShooterControllerMode {
         CLOSE,
-        FAR,
-        SET
+        FAR
     }
 
     private ShooterControllerMode currentControllerMode = ShooterControllerMode.CLOSE;
+
+
     public Command close() {
         currentControllerMode = ShooterControllerMode.CLOSE;
-        return new RunToVelocity(closeShooter, 1250).requires(shooter);
+        return new RunToVelocity(closeShooterController, 1250).requires(shooter);
     }
+
     public Command far() {
-        currentControllerMode = ShooterControllerMode.CLOSE;
-        return new RunToVelocity(farShooter, 1500).requires(shooter);    }
+        currentControllerMode = ShooterControllerMode.FAR;
+        return new RunToVelocity(farShooterController, 1500).requires(shooter);
+    }
+
     public Command idle() {
         currentControllerMode = ShooterControllerMode.CLOSE;
-        return new RunToVelocity(closeShooter, 0).requires(shooter);    }
-    public Command setVelocity(double velocity) {
-        currentControllerMode = ShooterControllerMode.SET;
-        return new RunToVelocity(setShooter, velocity).requires(shooter);
+        return new RunToVelocity(closeShooterController, 0).requires(shooter);
     }
+
+    public Command setShooterVel(double shooterVel) {
+        currentControllerMode = ShooterControllerMode.CLOSE;
+        return new RunToVelocity(closeShooterController, shooterVel).requires(shooter);
+    }
+
+    public Command setShooterVel(double shooterVel, boolean farSide) {
+        if (farSide) {
+            currentControllerMode = ShooterControllerMode.FAR;
+        } else {
+            currentControllerMode = ShooterControllerMode.CLOSE;
+        }
+
+        return new RunToVelocity(
+                farSide ? farShooterController : closeShooterController,
+                shooterVel
+        ).requires(shooter);
+    }
+
+    public void enable() {
+        enabled = true;
+    }
+
+    public void disable() {
+        enabled = false;
+        shooter.setPower(0);
+    }
+
     @Override
     public void initialize() {
         leftOuttake = new MotorEx("leftOuttake");
         rightOuttake = new MotorEx("rightOuttake");
+        leftOuttake.reverse();
+        shooter = new MotorGroup(leftOuttake, rightOuttake);
+
+        disable();
     }
 
     @Override
     public void periodic() {
+        if (!enabled) {
+            shooter.setPower(0);
+            return;
+        }
+
         ControlSystem controller;
 
         if (currentControllerMode == ShooterControllerMode.FAR) {
-            controller = farShooter;
+            controller = farShooterController;
         } else {
-            controller = closeShooter;
+            controller = closeShooterController;
         }
+
+        shooter.setPower(controller.calculate(shooter.getState()));
     }
 }
-
-
