@@ -56,108 +56,100 @@ public class Blue12Auton extends NextFTCOpMode {
             Shoot1 = PedroComponent.follower()
                     .pathBuilder().addPath(
                             new BezierLine(
-                                    new Pose(28.231, 132.138),
+                                    new Pose(25.121, 127.626),
 
-                                    new Pose(47.934, 95.071)
+                                    new Pose(49.495, 93.645)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(134))
+
 
                     .build();
 
             Intake1 = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierCurve(
-                                    new Pose(47.934, 95.071),
-                                    new Pose(43.998, 84.425),
-                                    new Pose(35.067, 83.934),
-                                    new Pose(16.404, 83.575)
+                                    new Pose(49.495, 93.645),
+                                    new Pose(36.112, 84.467),
+                                    new Pose(16.636, 84.243)
                             )
                     ).setTangentHeadingInterpolation()
 
                     .build();
 
             Gate = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierCurve(
-                                    new Pose(16.404, 83.575),
-                                    new Pose(23.249, 76.863),
-                                    new Pose(16.371, 70.493)
+                                    new Pose(16.636, 84.243),
+                                    new Pose(23.421, 78.150),
+                                    new Pose(16.374, 72.224)
                             )
-                    ).setConstantHeadingInterpolation(Math.toRadians(180))
+                    ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
 
                     .build();
 
             Shoot2 = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierLine(
-                                    new Pose(16.371, 70.493),
+                                    new Pose(16.374, 72.224),
 
-                                    new Pose(47.700, 95.578)
+                                    new Pose(49.794, 93.757)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
 
                     .build();
 
             Intake2 = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierCurve(
-                                    new Pose(47.700, 95.578),
-                                    new Pose(43.274, 59.608),
-                                    new Pose(29.007, 62.097),
-                                    new Pose(11.567, 59.628)
+                                    new Pose(49.794, 93.757),
+                                    new Pose(40.897, 61.799),
+                                    new Pose(32.112, 58.949),
+                                    new Pose(10.916, 58.738)
                             )
                     ).setTangentHeadingInterpolation()
 
                     .build();
 
             Shoot3 = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierCurve(
-                                    new Pose(11.567, 59.628),
-                                    new Pose(37.419, 54.926),
-                                    new Pose(50.293, 92.995)
+                                    new Pose(10.916, 58.738),
+                                    new Pose(42.014, 54.682),
+                                    new Pose(50.028, 93.897)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
 
                     .build();
 
             Intake3 = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierCurve(
-                                    new Pose(50.293, 92.995),
-                                    new Pose(53.236, 30.054),
-                                    new Pose(26.988, 34.426),
-                                    new Pose(12.529, 35.096)
+                                    new Pose(50.028, 93.897),
+                                    new Pose(50.869, 33.654),
+                                    new Pose(37.682, 34.925),
+                                    new Pose(11.280, 34.794)
                             )
                     ).setTangentHeadingInterpolation()
 
                     .build();
 
             Shoot4 = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierLine(
-                                    new Pose(12.529, 35.096),
+                                    new Pose(11.280, 34.794),
 
-                                    new Pose(48.264, 95.573)
+                                    new Pose(49.953, 93.589)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
 
                     .build();
 
             End = PedroComponent.follower()
-                    .pathBuilder()
-                    .addPath(
+                    .pathBuilder().addPath(
                             new BezierLine(
-                                    new Pose(48.264, 95.573),
+                                    new Pose(49.953, 93.589),
 
-                                    new Pose(23.649, 71.914)
+                                    new Pose(24.430, 71.486)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
 
@@ -190,7 +182,7 @@ public class Blue12Auton extends NextFTCOpMode {
         private Command autonomous() {
             return new ParallelGroup(
                     //INTAKE ALWAYS ON
-                    //Intakenf.INSTANCE.in(),
+                    Intakenf.INSTANCE.in(),
 
                     //MAIN SEQUENCE
                     new SequentialGroup(
@@ -198,12 +190,12 @@ public class Blue12Auton extends NextFTCOpMode {
                             //Preloads
                             new ParallelGroup(
                                     new FollowPath(Shoot1, true)
-                                    //,
+                                    ,
 
-                                    //baseState(),
-                                    //Shooternf.INSTANCE.close()
+                                    baseState(),
+                                    Shooternf.INSTANCE.close()
                             ),
-                            //transferUpFor(2.2),
+                            transferUpFor(1),
 
 
                             //SET 2
@@ -212,10 +204,10 @@ public class Blue12Auton extends NextFTCOpMode {
                                             new FollowPath(Intake1),
                                             new FollowPath(Shoot2, true)
                                     )
-                                    //,
-                                    //Shooternf.INSTANCE.close()
+                                    ,
+                                    Shooternf.INSTANCE.close()
                             ),
-                            //transferUpFor(2.5),
+                            transferUpFor(1),
 
                             //SET 3 Human Player
                             new ParallelGroup(
@@ -223,10 +215,10 @@ public class Blue12Auton extends NextFTCOpMode {
                                             new FollowPath(Intake2),
                                             new FollowPath(Shoot3, true)
                                     )
-                                    //,
-                                    //Shooternf.INSTANCE.close()
+                                    ,
+                                    Shooternf.INSTANCE.close()
                             ),
-                            //transferUpFor(2.5),
+                            transferUpFor(1),
 
                             //SET 4
                             new SequentialGroup(
@@ -235,10 +227,10 @@ public class Blue12Auton extends NextFTCOpMode {
                                                     new FollowPath(Intake3),
                                                     new FollowPath(Shoot4, true)
                                             )
-                                            //,
-                                           // Shooternf.INSTANCE.close()
+                                            ,
+                                            Shooternf.INSTANCE.close()
                                     ),
-                                    //transferUpFor(4),
+                                    transferUpFor(1),
                                     new FollowPath(End)
                             )
 

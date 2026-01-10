@@ -60,7 +60,15 @@ public class Shooternf implements Subsystem {
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+        ControlSystem controller;
+
+        if (currentControllerMode == ShooterControllerMode.FAR) {
+            controller = farShooter;
+        } else {
+            controller = closeShooter;
+        }
+    }
 }
 
 
