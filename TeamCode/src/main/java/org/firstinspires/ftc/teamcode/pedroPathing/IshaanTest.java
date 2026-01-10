@@ -227,18 +227,17 @@ public class IshaanTest extends NextFTCOpMode {
                         //transferUpFor(2.5),
 
                         //SET 4
-                        new SequentialGroup(
-                                new ParallelGroup(
-                                        new SequentialGroup(
-                                                new FollowPath(Intake3),
-                                                new FollowPath(Shoot4, true)
-                                        )
-                                        //,
-                                        // Shooternf.INSTANCE.close()
-                                ),
-                                //transferUpFor(4),
-                                new FollowPath(End)
-                        )
+                        new ParallelGroup(
+                                new SequentialGroup(
+                                        new FollowPath(Intake3),
+                                        new FollowPath(Shoot4, true)
+                                )
+                                //,
+                                // Shooternf.INSTANCE.close()
+                        ),
+                        //transferUpFor(4),
+                        new FollowPath(End)
+
 
 
                 )
