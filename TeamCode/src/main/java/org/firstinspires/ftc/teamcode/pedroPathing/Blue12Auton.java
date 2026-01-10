@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
@@ -151,7 +151,9 @@ public class Blue12Auton extends NextFTCOpMode {
 
                     .build();
 
-            End = follower.pathBuilder().addPath(
+            End = PedroComponent.follower()
+                    .pathBuilder()
+                    .addPath(
                             new BezierLine(
                                     new Pose(48.264, 95.573),
 
@@ -188,7 +190,7 @@ public class Blue12Auton extends NextFTCOpMode {
         private Command autonomous() {
             return new ParallelGroup(
                     //INTAKE ALWAYS ON
-                    Intakenf.INSTANCE.in(),
+                    //Intakenf.INSTANCE.in(),
 
                     //MAIN SEQUENCE
                     new SequentialGroup(
@@ -247,14 +249,14 @@ public class Blue12Auton extends NextFTCOpMode {
         @Override
         public void onInit() {
             paths();
-            set_hood().schedule();
-            Shooternf.INSTANCE.idle();
+            //set_hood().schedule();
+            //Shooternf.INSTANCE.idle();
         }
         @Override
         public void onStartButtonPressed() {
             autonomous().schedule();
 
-            Shooternf.INSTANCE.close();
+            //Shooternf.INSTANCE.close();
         }
 
 }
