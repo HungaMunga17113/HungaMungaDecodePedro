@@ -53,7 +53,7 @@ public class IshaanTest extends NextFTCOpMode {
     private void buildPaths() {
         follower().setStartingPose(new Pose(28.231, 132.138, Math.toRadians(143)));
 
-        Shoot1 = PedroComponent.follower()
+        Shoot1 = follower()
                 .pathBuilder().addPath(
                         new BezierLine(
                                 new Pose(28.231, 132.138),
@@ -64,7 +64,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        Intake1 = PedroComponent.follower()
+        Intake1 = follower()
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -77,7 +77,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        Gate = PedroComponent.follower()
+        Gate = follower()
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -89,7 +89,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        Shoot2 = PedroComponent.follower()
+        Shoot2 = follower()
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -101,7 +101,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        Intake2 = PedroComponent.follower()
+        Intake2 = follower()
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -114,7 +114,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        Shoot3 = PedroComponent.follower()
+        Shoot3 = follower()
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -126,7 +126,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        Intake3 = PedroComponent.follower()
+        Intake3 = follower()
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -139,7 +139,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        Shoot4 = PedroComponent.follower()
+        Shoot4 = follower()
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
