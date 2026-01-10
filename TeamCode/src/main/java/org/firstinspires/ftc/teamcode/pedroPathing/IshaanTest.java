@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 
 import com.pedropathing.geometry.BezierCurve;
@@ -51,7 +51,7 @@ public class IshaanTest extends NextFTCOpMode {
     public PathChain End;
 
     private void buildPaths() {
-        PedroComponent.follower().setStartingPose(new Pose(28.231, 132.138, Math.toRadians(143)));
+        follower().setStartingPose(new Pose(28.231, 132.138, Math.toRadians(143)));
 
         Shoot1 = PedroComponent.follower()
                 .pathBuilder().addPath(
@@ -151,7 +151,7 @@ public class IshaanTest extends NextFTCOpMode {
 
                 .build();
 
-        End = follower.pathBuilder().addPath(
+        End = follower().pathBuilder().addPath(
                         new BezierLine(
                                 new Pose(48.264, 95.573),
 
