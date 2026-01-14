@@ -45,6 +45,8 @@ public class V2IntakeShooterTest extends OpMode {
     public static double transferPower = 1;
     //1 is close
     //0.85 is far
+    boolean lastA = false;
+
     public enum shooterStates {
         CLOSE,
         FAR
@@ -147,6 +149,18 @@ public class V2IntakeShooterTest extends OpMode {
         }
     }
     public void shootTest() {
+        boolean aPressed = gamepad1.a;
+
+        if (aPressed && !lastA) {
+            if (mode == shooterStates.CLOSE) {
+                mode = shooterStates.FAR;
+            } else {
+                mode = shooterStates.CLOSE;
+            }
+        }
+
+        lastA = aPressed;
+
         switch (mode) {
             case CLOSE:
                 ticksPerSecond = 1250;
@@ -158,9 +172,6 @@ public class V2IntakeShooterTest extends OpMode {
                 rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 leftOuttake.setVelocity(ticksPerSecond);
                 rightOuttake.setVelocity(ticksPerSecond);
-                if (gamepad1.a) {
-                    mode = shooterStates.FAR;
-                }
                 break;
 
             case FAR:
@@ -172,9 +183,6 @@ public class V2IntakeShooterTest extends OpMode {
                 rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 leftOuttake.setVelocity(ticksPerSecond);
                 rightOuttake.setVelocity(ticksPerSecond);
-                if (gamepad1.a) {
-                    mode = shooterStates.CLOSE;
-                }
                 break;
         }
 
