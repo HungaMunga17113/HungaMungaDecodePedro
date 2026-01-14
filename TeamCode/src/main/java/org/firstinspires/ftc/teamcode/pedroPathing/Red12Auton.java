@@ -78,8 +78,8 @@ public class Red12Auton extends NextFTCOpMode {
                     .pathBuilder().addPath(
                             new BezierCurve(
                                     new Pose(127.577, 83.921),
-                                    new Pose(111.729, 81.700),
-                                    new Pose(127.839, 70.633)
+                                    new Pose(113.184, 71.790),
+                                    new Pose(127.577, 69.933)
                             )
                     ).setConstantHeadingInterpolation(Math.toRadians(0))
                     .build();
@@ -154,7 +154,7 @@ public class Red12Auton extends NextFTCOpMode {
 
     private Command set_hood() {
         return new SequentialGroup(
-                Hoodnf.INSTANCE.setHoodPos(0.32)
+                Hoodnf.INSTANCE.setHoodPos(0.393)
         );
 
     }
@@ -162,14 +162,15 @@ public class Red12Auton extends NextFTCOpMode {
     private Command transferUpFor(double time) {
         return new ParallelGroup(
                 Transfernf.INSTANCE.out(),
-                new Delay(time)
-        );
+                new Delay(time),
+                Transfernf.INSTANCE.idle()
+                );
     }
 
     private Command baseState() {
         return new ParallelGroup(
                 Transfernf.INSTANCE.idle(),
-                Hoodnf.INSTANCE.setHoodPos(0.32)
+                Hoodnf.INSTANCE.setHoodPos(0.393)
         );
     }
 
@@ -177,14 +178,14 @@ public class Red12Auton extends NextFTCOpMode {
         return new ParallelGroup(
                 //INTAKE ALWAYS ON
                 Intakenf.INSTANCE.in(),
+                Shooternf.INSTANCE.close(),
                 //MAIN SEQUENCE
                 new SequentialGroup(
 
                         //Preloads
                         new ParallelGroup(
                                 new FollowPath(Shoot1, true),
-                                baseState(),
-                                Shooternf.INSTANCE.close()
+                                baseState()
                         ),
                         new Delay(1),
                         transferUpFor(1),
@@ -198,8 +199,6 @@ public class Red12Auton extends NextFTCOpMode {
                                         new Delay(0.3),
                                         new FollowPath(Shoot2, true)
                                 )
-                                ,
-                                Shooternf.INSTANCE.close()
                         ),
                         transferUpFor(1),
 
@@ -209,8 +208,6 @@ public class Red12Auton extends NextFTCOpMode {
                                         new FollowPath(Intake2),
                                         new FollowPath(Shoot3, true)
                                 )
-                                ,
-                                Shooternf.INSTANCE.close()
                         ),
                         transferUpFor(1),
 
@@ -221,8 +218,6 @@ public class Red12Auton extends NextFTCOpMode {
                                                 new FollowPath(Intake3),
                                                 new FollowPath(Shoot4, true)
                                         )
-                                        ,
-                                        Shooternf.INSTANCE.close()
                                 ),
                                 transferUpFor(1),
                                 new FollowPath(End)

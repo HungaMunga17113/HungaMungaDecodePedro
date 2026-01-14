@@ -40,7 +40,6 @@ public class Blue12Auton extends NextFTCOpMode {
         );
     }
 
-
     public PathChain Shoot1;
     public PathChain Intake1;
     public PathChain Gate;
@@ -81,8 +80,8 @@ public class Blue12Auton extends NextFTCOpMode {
                     .pathBuilder().addPath(
                             new BezierCurve(
                                     new Pose(16.636, 84.243),
-                                    new Pose(23.421, 78.150),
-                                    new Pose(16.374, 72.224)
+                                    new Pose(25.221, 74.150),
+                                    new Pose(16.374, 70.224)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
 
@@ -161,7 +160,7 @@ public class Blue12Auton extends NextFTCOpMode {
 
         private Command set_hood() {
             return new SequentialGroup(
-                    Hoodnf.INSTANCE.setHoodPos(0.32)
+                    Hoodnf.INSTANCE.setHoodPos(0.393)
             );
 
         }
@@ -169,16 +168,11 @@ public class Blue12Auton extends NextFTCOpMode {
         private Command transferUpFor(double time) {
             return new ParallelGroup(
                     Transfernf.INSTANCE.out(),
-                    new Delay(time)
-            );
+                    new Delay(time),
+                    Transfernf.INSTANCE.idle()
+                    );
         }
 
-        private Command baseState() {
-            return new ParallelGroup(
-                    Transfernf.INSTANCE.idle(),
-                    Hoodnf.INSTANCE.setHoodPos(0.32)
-            );
-        }
 
         private Command autonomous() {
             return new ParallelGroup(
@@ -190,11 +184,10 @@ public class Blue12Auton extends NextFTCOpMode {
                             //Preloads
                             new ParallelGroup(
                                     new FollowPath(Shoot1, true),
-                                    baseState(),
-                                    Shooternf.INSTANCE.close()
+                                    Shooternf.INSTANCE.close(),
+                                    Hoodnf.INSTANCE.setHoodPos(0.393)
                             ),
                             transferUpFor(1),
-
 
                             //SET 2
                             new ParallelGroup(
@@ -208,6 +201,7 @@ public class Blue12Auton extends NextFTCOpMode {
                                     Shooternf.INSTANCE.close()
                             ),
                             transferUpFor(1),
+
 
                             //SET 3 Human Player
                             new ParallelGroup(
