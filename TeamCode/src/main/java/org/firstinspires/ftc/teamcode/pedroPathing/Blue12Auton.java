@@ -197,8 +197,7 @@ public class Blue12Auton extends NextFTCOpMode {
                                             new Delay(0.3),
                                             new FollowPath(Shoot2, true)
                                     )
-                                    ,
-                                    Shooternf.INSTANCE.close()
+
                             ),
                             transferUpFor(1),
 
