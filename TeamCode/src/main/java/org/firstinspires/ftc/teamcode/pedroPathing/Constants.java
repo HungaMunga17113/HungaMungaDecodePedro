@@ -20,11 +20,11 @@ public class Constants {
         public static FollowerConstants followerConstants = new FollowerConstants()
                 .forwardZeroPowerAcceleration(-30.327367609188478)
                 .lateralZeroPowerAcceleration(-55.0414278486583)
-                .translationalPIDFCoefficients(new PIDFCoefficients(0.095, 0, 0.01, 0.08))
+                .translationalPIDFCoefficients(new PIDFCoefficients(0.08, 0, 0.01, 0.08))
                 .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.046,0,0.001,0.008))
                 .headingPIDFCoefficients(new PIDFCoefficients(1.5, 0, 0.08, 0.05)) //1.3
                 .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(1.3, 0, 0.06, 0)) //1.1
-                .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.08,0.0,0.0001,0.6,0.01))
+                .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.065,0.0,0.0001,0.6,0.01))
                 .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.06,0,0.000067,0.6,0.02))
                 .centripetalScaling(0.00065)
                 .useSecondaryTranslationalPIDF(true)

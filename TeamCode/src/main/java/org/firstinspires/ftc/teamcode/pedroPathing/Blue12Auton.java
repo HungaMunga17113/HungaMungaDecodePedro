@@ -50,199 +50,205 @@ public class Blue12Auton extends NextFTCOpMode {
     public PathChain Shoot4;
     public PathChain End;
 
-        private void paths() {
-            PedroComponent.follower().setStartingPose(new Pose(28.231, 132.138, Math.toRadians(143)));
+    private void paths() {
+        PedroComponent.follower().setStartingPose(new Pose(28.231, 132.138, Math.toRadians(143)));
 
-            Shoot1 = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierLine(
-                                    new Pose(25.121, 127.626),
+        Shoot1 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(25.121, 127.626),
 
-                                    new Pose(49.495, 93.645)
-                            )
-                    ).setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(134))
-
-
-                    .build();
-
-            Intake1 = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierCurve(
-                                    new Pose(49.495, 93.645),
-                                    new Pose(36.112, 84.467),
-                                    new Pose(16.630, 84.000)
-                            )
-                    ).setTangentHeadingInterpolation()
-
-                    .build();
-
-            Gate = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierCurve(
-                                    new Pose(16.630, 84.000),
-                                    new Pose(30, 84.000),
-                                    new Pose(30, 74.152),
-                                    new Pose(16.2, 72.45)
-                            )
-                    ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
-
-                    .build();
-
-            Shoot2 = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierLine(
-                                    new Pose(16.2, 72.45),
-                                    new Pose(49.794, 93.757)
-                            )
-                    ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
-
-                    .build();
-
-            Intake2 = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierCurve(
-                                    new Pose(49.794, 93.757),
-                                    new Pose(40.897, 61.799),
-                                    new Pose(32.112, 58.949),
-                                    new Pose(10.916, 58.738)
-                            )
-                    ).setTangentHeadingInterpolation()
-
-                    .build();
-
-            Shoot3 = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierCurve(
-                                    new Pose(10.916, 58.738),
-                                    new Pose(42.014, 54.682),
-                                    new Pose(50.028, 93.895)
-                            )
-                    ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
-
-                    .build();
-
-            Intake3 = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierCurve(
-                                    new Pose(50.028, 93.895),
-                                    new Pose(50.379, 34.654),
-                                    new Pose(37.582, 34.925),
-                                    new Pose(11.280, 34.794)
-                            )
-                    ).setTangentHeadingInterpolation()
-
-                    .build();
-
-            Shoot4 = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierLine(
-                                    new Pose(11.280, 34.794),
-
-                                    new Pose(45.623, 93.580)
-                            )
-                    ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
-
-                    .build();
-
-            End = PedroComponent.follower()
-                    .pathBuilder().addPath(
-                            new BezierLine(
-                                    new Pose(45.623, 93.580),
-
-                                    new Pose(19.230, 71.490)
-                            )
-                    ).setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
-
-                    .build();
-        }
+                                new Pose(49.495, 93.645)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(134))
 
 
+                .build();
 
-        private Command set_hood() {
-            return new SequentialGroup(
-                    Hoodnf.INSTANCE.setHoodPos(0.393)
-            );
+        Intake1 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(49.495, 93.645),
+                                new Pose(36.112, 84.467),
+                                new Pose(16.630, 84.000)
+                        )
+                ).setTangentHeadingInterpolation()
 
-        }
+                .build();
 
-        private Command transferUpFor(double time) {
-            return new ParallelGroup(
-                    Transfernf.INSTANCE.out(),
-                    new Delay(time),
-                    Transfernf.INSTANCE.idle()
-                    );
-        }
+        Gate = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(16.630, 84.000),
+                                new Pose(30, 84.000),
+                                new Pose(30, 74.152),
+                                new Pose(16.2, 72.45)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+
+                .build();
+
+        Shoot2 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(16.2, 72.45),
+                                new Pose(49.794, 93.757)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
+
+                .build();
+
+        Intake2 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(49.794, 93.757),
+                                new Pose(40.897, 61.799),
+                                new Pose(32.112, 58.949),
+                                new Pose(10.916, 58.738)
+                        )
+                ).setTangentHeadingInterpolation()
+
+                .build();
+
+        Shoot3 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(10.916, 58.738),
+                                new Pose(42.014, 54.682),
+                                new Pose(50.028, 93.895)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
+
+                .build();
+
+        Intake3 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(50.028, 93.895),
+                                new Pose(50.379, 34.654),
+                                new Pose(37.582, 34.925),
+                                new Pose(11.280, 34.794)
+                        )
+                ).setTangentHeadingInterpolation()
+
+                .build();
+
+        Shoot4 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(11.280, 34.794),
+
+                                new Pose(45.623, 93.580)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
+
+                .build();
+
+        End = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(45.623, 93.580),
+
+                                new Pose(19.230, 71.490)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
+
+                .build();
+    }
 
 
-        private Command autonomous() {
-            return new ParallelGroup(
-                    //INTAKE ALWAYS ON
-                    Intakenf.INSTANCE.in(),
-                    //MAIN SEQUENCE
-                    new SequentialGroup(
+    private Command set_hood() {
+        return new SequentialGroup(
+                Hoodnf.INSTANCE.setHoodPos(0.393)
+        );
 
-//                            Preloads
-                            new ParallelGroup(
-                                    new FollowPath(Shoot1, true)
-//                                    Shooternf.INSTANCE.close(),
-//                                    Hoodnf.INSTANCE.setHoodPos(0.393)
-                            ),
-                            transferUpFor(1),
+    }
 
-                            //SET 2
-                            new ParallelGroup(
-                                    new SequentialGroup(
-                                            new FollowPath(Intake1),
-                                            new FollowPath(Gate),
-                                            new Delay(0.25),
-                                            new FollowPath(Shoot2, true)
-                                    )
+    private Command transferUpFor(double time) {
+        return new SequentialGroup(
+                Transfernf.INSTANCE.out(),
+                new Delay(time),
+                Transfernf.INSTANCE.idle()
+        );
+    }
 
-                            ),
-                            transferUpFor(1),
+    private Command baseState() {
+        return new ParallelGroup(
+                Transfernf.INSTANCE.idle(),
+                Hoodnf.INSTANCE.setHoodPos(0.393)
+        );
+    }
 
 
-                            //SET 3 Human Player
-                            new ParallelGroup(
-                                    new SequentialGroup(
-                                            new FollowPath(Intake2),
-                                            new FollowPath(Shoot3, true)
-                                    )
+    private Command autonomous() {
+        return new ParallelGroup(
+                //INTAKE ALWAYS ON
+                Intakenf.INSTANCE.in(),
+                Shooternf.INSTANCE.close(),
+                //MAIN SEQUENCE
+                new SequentialGroup(
 
-//                                    Shooternf.INSTANCE.close()
-                            ),
-                            transferUpFor(1),
-
-                            //SET 4
-                            new SequentialGroup(
-                                    new ParallelGroup(
-                                            new SequentialGroup(
-                                                    new FollowPath(Intake3),
-                                                    new FollowPath(Shoot4, true)
-                                            )
-
-//                                            Shooternf.INSTANCE.close()
-                                    ),
-                                    transferUpFor(1),
-                                    new FollowPath(End)
-                            )
+                        //Preloads
+                        new ParallelGroup(
+                                new FollowPath(Shoot1, true),
+                                baseState()
+                        ),
+                        transferUpFor(1),
 
 
-                    )
-            );
-        }
-        @Override
-        public void onInit() {
-            paths();
-            set_hood().schedule();
-            Shooternf.INSTANCE.disable();
-        }
-        @Override
-        public void onStartButtonPressed() {
-            Shooternf.INSTANCE.enable();
+                        //SET 2
+                        new ParallelGroup(
+                                new SequentialGroup(
+                                        new FollowPath(Intake1),
+                                        new FollowPath(Gate),
+                                        new Delay(0.3),
+                                        new FollowPath(Shoot2, true)
+                                )
+                        ),
+                        transferUpFor(1),
 
-            autonomous().schedule();
+                        //SET 3 Human Player
+                        new ParallelGroup(
+                                new SequentialGroup(
+                                        new FollowPath(Intake2),
+                                        new FollowPath(Shoot3, true)
+                                )
+                        ),
+                        transferUpFor(1),
 
-        }
+                        //SET 4
+                        new SequentialGroup(
+                                new ParallelGroup(
+                                        new SequentialGroup(
+                                                new FollowPath(Intake3),
+                                                new FollowPath(Shoot4, true)
+                                        )
+                                ),
+                                transferUpFor(1),
+                                new FollowPath(End)
+                        )
 
+
+                )
+        );
+    }
+
+    @Override
+    public void onInit() {
+        paths();
+        set_hood().schedule();
+        Shooternf.INSTANCE.disable();
+    }
+
+    @Override
+    public void onStartButtonPressed() {
+        Shooternf.INSTANCE.enable();
+
+        autonomous().schedule();
+
+    }
+
+    @Override
+    public void onStop() {
+    }
 }
