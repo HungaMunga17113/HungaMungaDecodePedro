@@ -244,5 +244,11 @@ public class Blue12Auton extends NextFTCOpMode {
             autonomous().schedule();
 
         }
+        @Override
+        public void onUpdate() {
+            telemetry.addData("Left Velocity", Shooternf.INSTANCE.leftOuttake.getVelocity());
+            telemetry.addData("Right Velocity", Shooternf.INSTANCE.rightOuttake.getVelocity());
+            telemetry.update();
+        }
 
 }
