@@ -125,9 +125,9 @@ public class Blue12Auton extends NextFTCOpMode {
                     .pathBuilder().addPath(
                             new BezierCurve(
                                     new Pose(50.028, 93.895),
-                                    new Pose(50.379, 34.654),
-                                    new Pose(37.582, 34.925),
-                                    new Pose(11.280, 34.794)
+                                    new Pose(50.379, 32.154),
+                                    new Pose(40.213, 32.725),
+                                    new Pose(11.280, 33.594)
                             )
                     ).setTangentHeadingInterpolation()
 
@@ -149,7 +149,7 @@ public class Blue12Auton extends NextFTCOpMode {
                             new BezierLine(
                                     new Pose(45.623, 93.580),
 
-                                    new Pose(19.230, 71.490)
+                                    new Pose(17.5, 71.12)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
 
@@ -194,7 +194,7 @@ public class Blue12Auton extends NextFTCOpMode {
                                     new SequentialGroup(
                                             new FollowPath(Intake1),
                                             new FollowPath(Gate),
-                                            new Delay(0.25),
+                                            new Delay(0.3),
                                             new FollowPath(Shoot2, true)
                                     )
 
