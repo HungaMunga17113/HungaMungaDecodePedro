@@ -1,38 +1,65 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.subsystems;
 
+import com.pedropathing.paths.PathChain;
+
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.delays.WaitUntil;
+import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.powerable.SetPower;
 
 public class Transfernf implements Subsystem {
+
     public static final Transfernf INSTANCE = new Transfernf();
-    private Transfernf() { }
+    private Transfernf() {}
 
     public MotorEx transfer;
 
-    public enum transferStates {
-        IN (1.0),
-        IDLE (0),
-        OUT (-1.0);
-
-        public final double transferState;
-        transferStates(double state) {
-            this.transferState = state;
-        }
-        public double getState() {
-            return transferState;
-        }
-    }
-
-    public Command in() {
-        return new SetPower(transfer, Transfernf.transferStates.IN.getState());
-    }
-    public Command idle() {
-        return new SetPower(transfer, Transfernf.transferStates.IDLE.getState());
-    }
     public Command out() {
-        return new SetPower(transfer, Transfernf.transferStates.OUT.getState());
+        return new SetPower(transfer, -1.0);
+    }
+
+    public Command gateIntake() {
+        return new SequentialGroup(
+                new SetPower(transfer, -0.2),
+                new Delay(0.2),
+                new SetPower(transfer, -0.15)
+        );
+    }
+
+    public Command stepOn() {
+        return new SequentialGroup(
+                new SetPower(transfer, -0.5),
+                new Delay(0.2),
+                new SetPower(transfer, -1.0)
+        );
+    }
+
+    public Command stepOn(double maxPower) {
+        return new SequentialGroup(
+                new SetPower(transfer, -0.5),
+                new Delay(0.2),
+                new SetPower(transfer, -maxPower)
+        );
+    }
+
+    public Command pickup(PathChain pathChain, double distanceForHotdog) {
+        return new SequentialGroup(
+                new SetPower(transfer, -0.4),
+                new WaitUntil(() ->
+                        pathChain.lastPath().getDistanceRemaining() < distanceForHotdog
+                )
+        );
+    }
+
+    public Command idle() {
+        return new SetPower(transfer, 0);
+    }
+
+    public Command forceBackOn() {
+        return new SetPower(transfer, -1.0);
     }
 
     @Override
@@ -43,5 +70,3 @@ public class Transfernf implements Subsystem {
     @Override
     public void periodic() {}
 }
-
-

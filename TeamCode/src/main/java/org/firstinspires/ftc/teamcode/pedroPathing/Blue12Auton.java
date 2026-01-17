@@ -80,8 +80,8 @@ public class Blue12Auton extends NextFTCOpMode {
                     .pathBuilder().addPath(
                             new BezierCurve(
                                     new Pose(16.636, 84.243),
-                                    new Pose(25.221, 74.150),
-                                    new Pose(16.374, 70.224)
+                                    new Pose(30.915, 73.451),
+                                    new Pose(16.374, 74.150)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
 
@@ -113,7 +113,7 @@ public class Blue12Auton extends NextFTCOpMode {
             Shoot3 = PedroComponent.follower()
                     .pathBuilder().addPath(
                             new BezierCurve(
-                                    new Pose(10.916, 58.738),
+                                    new Pose(10.9161, 58.738),
                                     new Pose(42.014, 54.682),
                                     new Pose(50.028, 93.897)
                             )
@@ -158,91 +158,92 @@ public class Blue12Auton extends NextFTCOpMode {
 
 
 
-        private Command set_hood() {
-            return new SequentialGroup(
-                    Hoodnf.INSTANCE.setHoodPos(0.393)
-            );
+    private Command set_hood() {
+        return new SequentialGroup(
+                Hoodnf.INSTANCE.setHoodPos(0.393)
+        );
 
-        }
+    }
 
-        private Command transferUpFor(double time) {
-            return new ParallelGroup(
-                    Transfernf.INSTANCE.out(),
-                    new Delay(time),
-                    Transfernf.INSTANCE.idle()
-                    );
-        }
+    private Command transferUpFor(double time) {
+        return new SequentialGroup(
+                Transfernf.INSTANCE.out(),
+                new Delay(time),
+                Transfernf.INSTANCE.idle()
+        );
+    }
 
+    private Command baseState() {
+        return new ParallelGroup(
+                Transfernf.INSTANCE.idle(),
+                Hoodnf.INSTANCE.setHoodPos(0.393)
+        );
+    }
 
-        private Command autonomous() {
-            return new ParallelGroup(
-                    //INTAKE ALWAYS ON
-                    Intakenf.INSTANCE.in(),
-                    //MAIN SEQUENCE
-                    new SequentialGroup(
+    private Command autonomous() {
+        return new ParallelGroup(
+                //INTAKE ALWAYS ON
+                Intakenf.INSTANCE.in(),
+                Shooternf.INSTANCE.close(),
+                //MAIN SEQUENCE
+                new SequentialGroup(
 
-                            //Preloads
-                            new ParallelGroup(
-                                    new FollowPath(Shoot1, true),
-                                    Shooternf.INSTANCE.close(),
-                                    Hoodnf.INSTANCE.setHoodPos(0.393)
-                            ),
-                            transferUpFor(1),
-
-                            //SET 2
-                            new ParallelGroup(
-                                    new SequentialGroup(
-                                            new FollowPath(Intake1),
-                                            new FollowPath(Gate),
-                                            new Delay(0.3),
-                                            new FollowPath(Shoot2, true)
-                                    )
-
-                            ),
-                            transferUpFor(1),
+                        //Preloads
+                        new ParallelGroup(
+                                new FollowPath(Shoot1, true),
+                                baseState()
+                        ),
+                        transferUpFor(1),
 
 
-                            //SET 3 Human Player
-                            new ParallelGroup(
-                                    new SequentialGroup(
-                                            new FollowPath(Intake2),
-                                            new FollowPath(Shoot3, true)
-                                    )
-                                    ,
-                                    Shooternf.INSTANCE.close()
-                            ),
-                            transferUpFor(1),
+                        //SET 2
+                        new ParallelGroup(
+                                new SequentialGroup(
+                                        new FollowPath(Intake1),
+                                        new FollowPath(Gate),
+                                        new Delay(0.3),
+                                        new FollowPath(Shoot2, true)
+                                )
+                        ),
+                        transferUpFor(1),
 
-                            //SET 4
-                            new SequentialGroup(
-                                    new ParallelGroup(
-                                            new SequentialGroup(
-                                                    new FollowPath(Intake3),
-                                                    new FollowPath(Shoot4, true)
-                                            )
-                                            ,
-                                            Shooternf.INSTANCE.close()
-                                    ),
-                                    transferUpFor(1),
-                                    new FollowPath(End)
-                            )
+                        //SET 3 Human Player
+                        new ParallelGroup(
+                                new SequentialGroup(
+                                        new FollowPath(Intake2),
+                                        new FollowPath(Shoot3, true)
+                                )
+                        ),
+                        transferUpFor(1),
+
+                        //SET 4
+                        new SequentialGroup(
+                                new ParallelGroup(
+                                        new SequentialGroup(
+                                                new FollowPath(Intake3),
+                                                new FollowPath(Shoot4, true)
+                                        )
+                                ),
+                                transferUpFor(1),
+                                new FollowPath(End)
+                        )
 
 
-                    )
-            );
-        }
-        @Override
-        public void onInit() {
-            paths();
-            set_hood().schedule();
-            Shooternf.INSTANCE.disable();
-        }
-        @Override
-        public void onStartButtonPressed() {
-            Shooternf.INSTANCE.enable();
+                )
+        );
+    }
+    @Override
+    public void onInit() {
+        paths();
+        set_hood().schedule();
+        Shooternf.INSTANCE.disable();
+    }
+    @Override
+    public void onStartButtonPressed() {
+        Shooternf.INSTANCE.enable();
 
-            autonomous().schedule();
+        autonomous().schedule();
 
-        }
+    }
 
 }
