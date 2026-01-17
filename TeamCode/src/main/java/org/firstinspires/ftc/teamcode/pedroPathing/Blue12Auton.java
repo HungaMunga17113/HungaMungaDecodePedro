@@ -72,7 +72,7 @@ public class Blue12Auton extends NextFTCOpMode {
                                     new Pose(36.112, 84.467),
                                     new Pose(16.630, 84.000)
                             )
-                    ).setTangentHeadingInterpolation()
+                    ).setLinearHeadingInterpolation(Math.toRadians(134),Math.toRadians(180))
 
                     .build();
 
@@ -106,7 +106,7 @@ public class Blue12Auton extends NextFTCOpMode {
                                     new Pose(32.112, 58.949),
                                     new Pose(10.916, 58.738)
                             )
-                    ).setTangentHeadingInterpolation()
+                    ).setLinearHeadingInterpolation(Math.toRadians(134),Math.toRadians(180))
 
                     .build();
 
