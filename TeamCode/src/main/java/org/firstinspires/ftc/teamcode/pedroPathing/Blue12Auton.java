@@ -102,7 +102,7 @@ public class Blue12Auton extends NextFTCOpMode {
                     .pathBuilder().addPath(
                             new BezierCurve(
                                     new Pose(49.794, 93.757),
-                                    new Pose(40.897, 61.799),
+                                    new Pose(40.897, 60.799),
                                     new Pose(32.112, 58.949),
                                     new Pose(10.916, 58.738)
                             )
