@@ -23,6 +23,7 @@ import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
@@ -43,7 +44,8 @@ public class CloseShooterTest extends OpMode {
     /*
     (Button) Initialize Period, before you press start on your program.
      */
-    public static double ticksPerSecond = 1250;
+    ElapsedTime transferTime = new ElapsedTime();
+    public static double ticksPerSecond = 1240;
     //1500 is far
     //1250 is close
     public static double servoPos = 0.393;
@@ -55,7 +57,7 @@ public class CloseShooterTest extends OpMode {
     public static double transferPower = 1;
     //1 is close
     //0.85 is far
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(331.76, 0, 0.01488, 18.3);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(331.76, 0, 0.0149, 18.05);
 
     public void init() {
 
@@ -137,32 +139,31 @@ public class CloseShooterTest extends OpMode {
         leftOuttake.setVelocity(ticksPerSecond);
         rightOuttake.setVelocity(ticksPerSecond);
 
-        /*
-        leftOuttake.setPower(outtakePower);
-        rightOuttake.setPower(outtakePower);
-        */
         double intakePower = 1;
 
-        if (gamepad1.right_trigger > 0.15) {
-            intake.setPower(intakePower);
-        } else if (gamepad1.x) {
-            intake.setPower(-intakePower);
-        } else {
-            intake.setPower(0);
-        }
-        /*
-        if (ticksPerSecond<1350) {
-            minimum = 0;
-            maximum = 1330;
-        } else {
-            minimum = 1475;
-            maximum = 1575;
-        }
 
-         */
 
-        if (gamepad1.y && leftOuttake.getVelocity()>minimum) {
+
+
+        if (gamepad1.yWasPressed() && leftOuttake.getVelocity()>minimum){
+            transferTime.reset();
             transfer.setPower(transferPower);
+            if (transferTime.milliseconds() >= 200 && leftOuttake.getVelocity()>minimum) {
+                intake.setPower(1);
+            } else {
+                if (gamepad1.right_trigger > 0.15) {
+                    intake.setPower(intakePower);
+                } else if (gamepad1.x) {
+                    intake.setPower(-intakePower);
+                } else {
+                    intake.setPower(0);
+                }
+            }
+        }
+        if (gamepad1.y && leftOuttake.getVelocity()>minimum) {
+            transferTime.reset();
+            transfer.setPower(transferPower);
+
         } else if (gamepad1.right_bumper) {
             transfer.setPower(-transferPower);
         } else {

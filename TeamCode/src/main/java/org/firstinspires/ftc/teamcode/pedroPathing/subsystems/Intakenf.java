@@ -26,13 +26,13 @@ public class Intakenf implements Subsystem {
     }
 
     public Command in() {
-        return new SetPower(intake, Intakenf.intakeStates.IN.getState());
+        return new SetPower(intake, Intakenf.intakeStates.IN.getState()).requires(intake);
     }
     public Command idle() {
-        return new SetPower(intake, Intakenf.intakeStates.IDLE.getState());
+        return new SetPower(intake, Intakenf.intakeStates.IDLE.getState()).requires(intake);
     }
     public Command out() {
-        return new SetPower(intake, Intakenf.intakeStates.OUT.getState());
+        return new SetPower(intake, Intakenf.intakeStates.OUT.getState()).requires(intake);
     }
 
     @Override

@@ -19,56 +19,28 @@ public class Shooternf implements Subsystem {
     public MotorGroup shooter;
 
     private final ControlSystem closeShooterController = ControlSystem.builder()
-            .velPid(0.345, 0, 0.001)
+            .velPid(2, 0, 0.001)
             .basicFF(0.002)
             .build();
 
-    private final ControlSystem farShooterController = ControlSystem.builder()
-            .velPid(0.38, 0, 0.003)
-            .basicFF(0.006)
-            .build();
+
 
     private boolean enabled = false;
 
-    private enum ShooterControllerMode {
-        CLOSE,
-        FAR
-    }
-
-    private ShooterControllerMode currentControllerMode = ShooterControllerMode.CLOSE;
 
 
     public Command close() {
-        currentControllerMode = ShooterControllerMode.CLOSE;
         return new RunToVelocity(closeShooterController, 1250).requires(shooter);
     }
 
-    public Command far() {
-        currentControllerMode = ShooterControllerMode.FAR;
-        return new RunToVelocity(farShooterController, 1500).requires(shooter);
-    }
+
 
     public Command idle() {
-        currentControllerMode = ShooterControllerMode.CLOSE;
         return new RunToVelocity(closeShooterController, 0).requires(shooter);
     }
 
     public Command setShooterVel(double shooterVel) {
-        currentControllerMode = ShooterControllerMode.CLOSE;
         return new RunToVelocity(closeShooterController, shooterVel).requires(shooter);
-    }
-
-    public Command setShooterVel(double shooterVel, boolean farSide) {
-        if (farSide) {
-            currentControllerMode = ShooterControllerMode.FAR;
-        } else {
-            currentControllerMode = ShooterControllerMode.CLOSE;
-        }
-
-        return new RunToVelocity(
-                farSide ? farShooterController : closeShooterController,
-                shooterVel
-        ).requires(shooter);
     }
 
     public void enable() {
@@ -96,15 +68,6 @@ public class Shooternf implements Subsystem {
             shooter.setPower(0);
             return;
         }
-
-        ControlSystem controller;
-
-        if (currentControllerMode == ShooterControllerMode.FAR) {
-            controller = farShooterController;
-        } else {
-            controller = closeShooterController;
-        }
-
-        shooter.setPower(controller.calculate(shooter.getState()));
+        shooter.setPower(closeShooterController.calculate(shooter.getState()));
     }
 }

@@ -160,7 +160,7 @@ public class Red12Auton extends NextFTCOpMode {
     }
 
     private Command transferUpFor(double time) {
-        return new ParallelGroup(
+        return new SequentialGroup(
                 Transfernf.INSTANCE.out(),
                 new Delay(time),
                 Transfernf.INSTANCE.idle()
@@ -187,7 +187,6 @@ public class Red12Auton extends NextFTCOpMode {
                                 new FollowPath(Shoot1, true),
                                 baseState()
                         ),
-                        new Delay(1),
                         transferUpFor(1),
 
 
@@ -240,5 +239,7 @@ public class Red12Auton extends NextFTCOpMode {
         autonomous().schedule();
 
     }
-
+    @Override
+    public void onStop() {
+    }
 }
