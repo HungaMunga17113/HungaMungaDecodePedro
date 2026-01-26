@@ -211,8 +211,6 @@ public class BlueClose15 extends NextFTCOpMode {
                         new ParallelGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake1),
-                                        new FollowPath(Gate),
-                                        new Delay(0.3),
                                         new FollowPath(Shoot2, true)
                                 )
 
