@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
-
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -28,8 +26,8 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 //
 @Autonomous
 @Configurable
-public class BlueExp1 extends NextFTCOpMode {
-    public BlueExp1() {
+public class BlueClose18 extends NextFTCOpMode {
+    public BlueClose18() {
         addComponents(
                 new SubsystemComponent(
                         Intakenf.INSTANCE, Hoodnf.INSTANCE,
@@ -51,6 +49,8 @@ public class BlueExp1 extends NextFTCOpMode {
     public PathChain Intake4;
     public PathChain Shoot5;
     public PathChain Intake5;
+    public PathChain Shoot6;
+
     public PathChain End;
 
     private void paths() {
@@ -72,7 +72,7 @@ public class BlueExp1 extends NextFTCOpMode {
                         new BezierCurve(
                                 new Pose(59.141, 84.276),
                                 new Pose(63.527, 59.889),
-                                new Pose(14.645, 59.148)
+                                new Pose(17.125, 61.463)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(135),Math.toRadians(180))
 
@@ -161,6 +161,16 @@ public class BlueExp1 extends NextFTCOpMode {
                                 new Pose(12.574, 35.749)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(135),Math.toRadians(180))
+
+                .build();
+
+        Shoot6 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(15.049, 84.348),
+                                new Pose(59.442, 84.241)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(180),Math.toRadians(135))
 
                 .build();
 
@@ -258,8 +268,8 @@ public class BlueExp1 extends NextFTCOpMode {
 
                         new ParallelGroup(
                                 new SequentialGroup(
-                                        new FollowPath(Intake5)
-//                                        new FollowPath(Shoot5, true)
+                                        new FollowPath(Intake5),
+                                        new FollowPath(Shoot6, true)
                                 )
 
 //                                    Shooternf.INSTANCE.close()
