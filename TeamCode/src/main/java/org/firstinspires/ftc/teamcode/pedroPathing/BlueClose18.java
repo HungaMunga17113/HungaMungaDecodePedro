@@ -72,7 +72,7 @@ public class BlueClose18 extends NextFTCOpMode {
                         new BezierCurve(
                                 new Pose(59.141, 84.276),
                                 new Pose(63.527, 59.889),
-                                new Pose(17.125, 61.463)
+                                new Pose(16.133, 60.967)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(135),Math.toRadians(180))
 
@@ -81,7 +81,7 @@ public class BlueClose18 extends NextFTCOpMode {
         Shoot2 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(14.645, 59.148),
+                                new Pose(16.133, 60.967),
                                 new Pose(63.361, 59.393),
                                 new Pose(59.442, 84.241)
                         )
