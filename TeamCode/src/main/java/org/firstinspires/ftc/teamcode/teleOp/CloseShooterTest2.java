@@ -31,7 +31,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import java.util.concurrent.TimeUnit;
 @Configurable
 @TeleOp
-public class CloseShooterTest extends OpMode {
+public class CloseShooterTest2 extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
     Follower follower;
     //Sloth
@@ -45,10 +45,10 @@ public class CloseShooterTest extends OpMode {
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 1225;
+    public static double ticksPerSecond = 1265;
     //1500 is far
     //1250 is close
-    public static double servoPos = 0.393;
+    public static double servoPos = 0.4;
     //0.335 is far
     //0.393 is close
     public static double minimum = 0;
@@ -57,8 +57,8 @@ public class CloseShooterTest extends OpMode {
     public static double transferPower = 1;
     //1 is close
     //0.85 is far
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(331.9, 0, 0.0149, 17.8);
-
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(450, 0, 0.012, 11.7);
+//708.75
     public void init() {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());

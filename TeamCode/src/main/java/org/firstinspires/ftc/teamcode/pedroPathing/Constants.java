@@ -20,20 +20,20 @@ public class Constants {
         public static FollowerConstants followerConstants = new FollowerConstants()
                 .forwardZeroPowerAcceleration(-30.327367609188478)
                 .lateralZeroPowerAcceleration(-55.0414278486583)
-                .translationalPIDFCoefficients(new PIDFCoefficients(0.08, 0, 0.01, 0.08))
-                .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.046,0,0.001,0.008))
+                .translationalPIDFCoefficients(new PIDFCoefficients(0.07, 0, 0.01, 0.08))
+                .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.05,0,0.001,0.008))
                 .headingPIDFCoefficients(new PIDFCoefficients(1.5, 0, 0.08, 0.05)) //1.3
                 .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(1.3, 0, 0.06, 0)) //1.1
-                .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.065,0.0,0.0001,0.6,0.01))
-                .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.06,0,0.000067,0.6,0.02))
-                .centripetalScaling(0.00065)
+                .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.055,0.0,0.0001,0.6,0.01))
+                .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.055,0,0.000067,0.6,0.02))
+                .centripetalScaling(0.0006)
                 .useSecondaryTranslationalPIDF(true)
                 .useSecondaryHeadingPIDF(true)
                 .useSecondaryDrivePIDF(true)
                 .mass(10.61406);
 
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 50, 1.6, 1.4);
+    public static PathConstraints pathConstraints = new PathConstraints(0.99, 50, 1.5, 1.4);
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(0)
             .strafePodX(-6.9375)
@@ -44,8 +44,10 @@ public class Constants {
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .xVelocity(79.7965)
-            .yVelocity(62.5067153089624)
+            .xVelocity(90)
+            //79.7965
+            .yVelocity(70)
+            //62.5067153089624
             .rightFrontMotorName("rightFront")
             .rightRearMotorName("rightBack")
             .leftRearMotorName("leftBack")

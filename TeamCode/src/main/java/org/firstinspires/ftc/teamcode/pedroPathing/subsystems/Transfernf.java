@@ -18,7 +18,7 @@ public class Transfernf implements Subsystem {
     public MotorEx transfer;
 
     public Command out() {
-        return new SetPower(transfer, -1.0);
+        return new SetPower(transfer, -0.9);
     }
 
     public Command gateIntake() {

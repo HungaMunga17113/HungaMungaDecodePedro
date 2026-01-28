@@ -52,7 +52,7 @@ public class V2IntakeShooterTest extends OpMode {
         FAR
     }
     public shooterStates mode = shooterStates.CLOSE;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(331.76, 0, 0.01488, 18.3);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(708.5, 0, 0.012, 11.7);
 
     public void init() {
 
@@ -163,7 +163,7 @@ public class V2IntakeShooterTest extends OpMode {
 
         switch (mode) {
             case CLOSE:
-                ticksPerSecond = 1250;
+                ticksPerSecond = 1230;
                 servoPos = 0.393;
                 minimum = 0;
 
@@ -179,6 +179,7 @@ public class V2IntakeShooterTest extends OpMode {
                 servoPos = 0.335;
                 minimum = 1480;
 
+                servo.setPosition(servoPos);
                 leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
                 leftOuttake.setVelocity(ticksPerSecond);

@@ -5,10 +5,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.BezierLine;
-import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
-import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,20 +14,22 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.pedropathing.follower.Follower;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.EndPose;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.Pose;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+import com.pedropathing.paths.PathChain;
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @Configurable
 @TeleOp
-public class FarShooterTest extends OpMode {
+public class MyMomsKindaHomeless extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
     private Follower follower;
     //Sloth
@@ -43,31 +43,31 @@ public class FarShooterTest extends OpMode {
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 1530;
+    public static double ticksPerSecond = 1225;
     //1500 is far
     //1250 is close
-    public static double servoPos = 0.335;
+    public static double servoPos = 0.395;
     //0.335 is far
     //0.393 is close
-    public static double minimum = 1510;
+    public static double minimum = 0;
     //0 is close
     //1480 is far
-    public static double transferPower = 0.85;
+    public static double transferPower = 0.775;
     //1 is close
     //0.85 is far
-    double maxHood = 0.57;
-    double minHood = 0.32;
+    double maxHood = 0.58;
+    double minHood = 0.31;
     private Supplier<PathChain> pathChain;
 
     static final double targetX = 0;
     static final double targetY = 144;
-    double minVelocity = 1200;
-    double maxVelocity = 1900;
+    double minVelocity = 935;
+    double maxVelocity = 1765;
     private boolean automatedDrive;
 
     double minDistance = 33.941125497;
-    double maxDistance = 190.91883092;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(708.5, 0, 0.015, 11.7);
+    double maxDistance = 160.91883092;
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(465, 0, 0.02, 11.7);
     @Override
     public void init() {
         follower = Constants.createFollower(hardwareMap);
@@ -123,48 +123,106 @@ public class FarShooterTest extends OpMode {
         shootTest();
     }
     private void Drive() {
+        double slowModeMultiplier = 1 - (0.6 * gamepad1.left_trigger);
+        double robotX = follower.getPose().getX();
+        double robotY = follower.getPose().getY();
+        double alignX = targetX + robotX;
+        double alignY = targetY - robotY;
+        double angle = Math.atan(alignX/alignY);
+        double turnTowards =  85+Math.toDegrees(angle);
         double max;
 
-        double axial = -gamepad1.left_stick_y;
-        double lateral = gamepad1.left_stick_x;
-        double yaw = gamepad1.right_stick_x;
-        double drivePower = 0.95 - (0.6 * gamepad1.left_trigger);
+            double axial = -gamepad1.left_stick_y;
+            double lateral = gamepad1.left_stick_x;
+            double yaw = gamepad1.right_stick_x;
+            double drivePower = 0.95 - (0.6 * gamepad1.left_trigger);
 
-        double leftFrontPower = axial + lateral + yaw;
-        double rightFrontPower = axial - lateral - yaw;
-        double leftBackPower = axial - lateral + yaw;
-        double rightBackPower = axial + lateral - yaw;
+            double leftFrontPower = axial + lateral + yaw;
+            double rightFrontPower = axial - lateral - yaw;
+            double leftBackPower = axial - lateral + yaw;
+            double rightBackPower = axial + lateral - yaw;
 
-        max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
-        max = Math.max(max, Math.abs(leftBackPower));
-        max = Math.max(max, Math.abs(rightBackPower));
+            max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+            max = Math.max(max, Math.abs(leftBackPower));
+            max = Math.max(max, Math.abs(rightBackPower));
 
-        if (max > 1.0) {
-            leftFrontPower /= max;
-            rightFrontPower /= max;
-            leftBackPower /= max;
-            rightBackPower /= max;
+            if (max > 1.0) {
+                leftFrontPower /= max;
+                rightFrontPower /= max;
+                leftBackPower /= max;
+                rightBackPower /= max;
+            }
+            rightFront.setPower(rightFrontPower*drivePower);
+            rightBack.setPower(rightBackPower*drivePower);
+            leftFront.setPower(leftFrontPower*drivePower);
+            leftBack.setPower(leftBackPower*drivePower);
+
+        /*
+        //Automated PathFollowing
+        if (gamepad1.a) {
+            follower.turnToDegrees(turnTowards);
+
+            /*
+            pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
+                    .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX(),follower.getPose().getY()))))
+                    .setHeadingInterpolation(
+                            HeadingInterpolator.linearFromPoint(
+                                    () -> follower.getPose() != null
+                                            ? follower.getPose().getHeading()
+                                            : 0,
+                                    Math.toRadians(turnTowards),
+                                    0.2))
+                    .build();
+            follower.followPath(pathChain.get());
+
+
+        } else {
+            follower.breakFollowing();
         }
-        rightFront.setPower(rightFrontPower*drivePower);
-        rightBack.setPower(rightBackPower*drivePower);
-        leftFront.setPower(leftFrontPower*drivePower);
-        leftBack.setPower(leftBackPower*drivePower);
-
+        */
     }
 
     public void shootTest() {
-        servo.setPosition(servoPos);
-        leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
-        rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
-        leftOuttake.setVelocity(ticksPerSecond);
-        rightOuttake.setVelocity(ticksPerSecond);
+        double robotX = follower.getPose().getX();
+        double robotY = follower.getPose().getY();
+        double dx = targetX - robotX;
+        double dy = targetY - robotY;
+        double distance = Math.hypot(dx, dy);
+
+
+        double hoodPosition = Range.clip(
+                maxHood -
+                        (distance - minDistance) * (maxHood - minHood) / (maxDistance - minDistance),
+                minHood,
+                maxHood
+        );
+
+        servo.setPosition(hoodPosition);
+
+        double shooterVelocity = Range.clip(
+                minVelocity +
+                        (distance - minDistance) * (maxVelocity - minVelocity) / (maxDistance - minDistance),
+                minVelocity,
+                maxVelocity
+        );
 
         /*
-        leftOuttake.setPower(outtakePower);
-        rightOuttake.setPower(outtakePower);
-        */
-        double intakePower = 1;
+        double shooterVelocity =
+                0.8 * distance * distance +
+                        20 * distance +
+                        1600;
+         */
+        if (shooterVelocity>1350) {
+            minimum=leftOuttake.getVelocity()-40;
+        }else{
+            minimum=0;
+        }
+        leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
+        rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
+        leftOuttake.setVelocity(shooterVelocity);
+        rightOuttake.setVelocity(shooterVelocity);
 
+        double intakePower = 1;
         if (gamepad1.right_trigger > 0.15) {
             intake.setPower(intakePower);
         } else if (gamepad1.x) {
@@ -172,19 +230,15 @@ public class FarShooterTest extends OpMode {
         } else {
             intake.setPower(0);
         }
-        /*
-        if (ticksPerSecond<1350) {
-            minimum = 0;
-            maximum = 1330;
-        } else {
-            minimum = 1475;
-            maximum = 1575;
-        }
 
-         */
+
+
+
 
         if (gamepad1.y && leftOuttake.getVelocity()>minimum) {
+            transferTime.reset();
             transfer.setPower(transferPower);
+
         } else if (gamepad1.right_bumper) {
             transfer.setPower(-transferPower);
         } else {
@@ -196,4 +250,8 @@ public class FarShooterTest extends OpMode {
         telemetry.addData("Error", ticksPerSecond-leftOuttake.getVelocity());
         telemetry.update();
     }
+    public void onStop(){
+
+    }
 }
+
