@@ -59,7 +59,7 @@ public class BlueFar9EM extends NextFTCOpMode {
 
                                 new Pose(58.976, 18.641)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(130))
+                ).setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(120))
 
                 .build();
 
@@ -70,18 +70,18 @@ public class BlueFar9EM extends NextFTCOpMode {
                                 new Pose(45.291, 38.397),
                                 new Pose(9.517, 35.732)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(180))
+                ).setLinearHeadingInterpolation(Math.toRadians(120), Math.toRadians(180))
 
                 .build();
 
         Shoot2 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(16.498, 70.016),
+                                new Pose(9.517, 35.732),
 
                                 new Pose(58.976, 18.641)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(130))
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(120))
 
                 .build();
 
@@ -92,7 +92,7 @@ public class BlueFar9EM extends NextFTCOpMode {
                                 new Pose(64.608, 77.978),
                                 new Pose(10.094, 54.187)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(180))
+                ).setLinearHeadingInterpolation(Math.toRadians(120), Math.toRadians(180))
 
                 .build();
 
@@ -103,7 +103,7 @@ public class BlueFar9EM extends NextFTCOpMode {
 
                                 new Pose(58.976, 18.641)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(130))
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(120))
 
                 .build();
 
