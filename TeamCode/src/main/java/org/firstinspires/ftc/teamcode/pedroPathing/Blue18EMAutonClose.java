@@ -28,8 +28,8 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 //
 @Autonomous
 @Configurable
-public class BlueClose15_V2 extends NextFTCOpMode {
-    public BlueClose15_V2() {
+public class Blue18EMAutonClose extends NextFTCOpMode {
+    public Blue18EMAutonClose() {
         addComponents(
                 new SubsystemComponent(
                         Intakenf.INSTANCE, Hoodnf.INSTANCE,
@@ -51,6 +51,9 @@ public class BlueClose15_V2 extends NextFTCOpMode {
     public PathChain Intake45;
     public PathChain FarAdjust;
     public PathChain Shoot5;
+    public PathChain Intake54;
+    public PathChain Shoot6;
+
 
 
     private void paths() {
@@ -71,29 +74,29 @@ public class BlueClose15_V2 extends NextFTCOpMode {
                 .pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(48.100, 95.545),
-                                new Pose(83.433, 62.181),
-                                new Pose(10.791, 57.628)
+                                new Pose(90.388, 60.893),
+                                new Pose(16.908, 62.588)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(133), Math.toRadians(180))
 
                 .build();
 
-        Gate1 = PedroComponent.follower()
-                .pathBuilder().addPath(
-                        new BezierCurve(
-                                new Pose(10.791, 57.628),
-                                new Pose(41.166, 62.177),
-                                new Pose(17.710, 63.057)
-                        )
-                ).setConstantHeadingInterpolation(Math.toRadians(180))
-
-                .build();
+//        Gate1 = PedroComponent.follower()
+//                .pathBuilder().addPath(
+//                        new BezierCurve(
+//                                new Pose(10.791, 57.628),
+//                                new Pose(48.385, 60.862),
+//                                new Pose(16.498, 70.016)
+//                        )
+//                ).setConstantHeadingInterpolation(Math.toRadians(180))
+//
+//                .build();
 
         Shoot2 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(17.710, 63.057),
-                                new Pose(68.632, 69.390),
+                                new Pose(16.908, 62.588),
+                                new Pose(74.914, 65.918),
                                 new Pose(48.100, 95.545)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(133))
@@ -104,7 +107,7 @@ public class BlueClose15_V2 extends NextFTCOpMode {
                 .pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(48.100, 95.545),
-                                new Pose(52.233, 81.019),
+                                new Pose(58.515, 83.562),
                                 new Pose(15.881, 84.491)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(133), Math.toRadians(180))
@@ -126,10 +129,10 @@ public class BlueClose15_V2 extends NextFTCOpMode {
                 .pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(48.100, 95.545),
-                                new Pose(76.279, 33.347),
+                                new Pose(69.798, 27.874),
                                 new Pose(11.592, 35.296)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(133), Math.toRadians(180))
+                ).setLinearHeadingInterpolation(Math.toRadians(133), Math.toRadians(172))
 
                 .build();
 
@@ -140,7 +143,7 @@ public class BlueClose15_V2 extends NextFTCOpMode {
 
                                 new Pose(48.100, 95.545)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(133))
+                ).setLinearHeadingInterpolation(Math.toRadians(172), Math.toRadians(133))
 
                 .build();
 
@@ -148,32 +151,44 @@ public class BlueClose15_V2 extends NextFTCOpMode {
                 .pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(48.100, 95.545),
-                                new Pose(52.765, 32.593),
-                                new Pose(12.413, 13.735)
+                                new Pose(61.327, 39.628),
+                                new Pose(14.326, 13.736)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(133), Math.toRadians(-154))
+                ).setLinearHeadingInterpolation(Math.toRadians(133), Math.toRadians(209))
 
                 .build();
 
-        FarAdjust = PedroComponent.follower()
-                .pathBuilder().addPath(
-                        new BezierCurve(
-                                new Pose(12.413, 13.735),
-                                new Pose(40.145, 14.537),
-                                new Pose(11.602, 11.056)
-                        )
-                ).setLinearHeadingInterpolation(Math.toRadians(-154), Math.toRadians(180))
-
-                .build();
 
         Shoot5 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(11.602, 11.056),
+                                new Pose(14.326, 13.736),
 
                                 new Pose(48.100, 95.545)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(133))
+                ).setLinearHeadingInterpolation(Math.toRadians(209), Math.toRadians(133))
+
+                .build();
+
+        Intake54 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierCurve(
+                                new Pose(48.100, 95.545),
+                                new Pose(61.327, 39.628),
+                                new Pose(14.326, 13.736)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(133), Math.toRadians(209))
+
+                .build();
+
+        Shoot6 = PedroComponent.follower()
+                .pathBuilder().addPath(
+                        new BezierLine(
+                                new Pose(14.326, 13.736),
+
+                                new Pose(55.539, 107.614)
+                        )
+                ).setLinearHeadingInterpolation(Math.toRadians(209), Math.toRadians(145))
 
                 .build();
 
@@ -224,6 +239,7 @@ public class BlueClose15_V2 extends NextFTCOpMode {
                         new ParallelGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake1),
+//                                        new FollowPath(Gate1),
                                         new FollowPath(Shoot2, true)
                                 )
                         ),
@@ -234,13 +250,14 @@ public class BlueClose15_V2 extends NextFTCOpMode {
                         new ParallelGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake2),
-                                        new FollowPath(Gate1),
                                         new Delay(0.4),
                                         new FollowPath(Shoot3, true)
                                 )
                         ),
                         new Delay(0.25),
                         transferUpFor(0.76),
+
+                        //SET 4
                         new ParallelGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake3),
@@ -249,21 +266,35 @@ public class BlueClose15_V2 extends NextFTCOpMode {
                         ),
                         new Delay(0.25),
                         transferUpFor(0.76),
-                        //SET 4
+
+                        //SET 5
                         new SequentialGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake45),
-                                        new FollowPath(FarAdjust),
+                                        new Delay(0.5),
+//                                        new FollowPath(FarAdjust),
                                         new FollowPath(Shoot5, true)),
 
                                 new Delay(0.25),
                                 transferUpFor(0.76)
-                        )
+                        ),
 
+                        //SET 6
+                        new SequentialGroup(
+                                new SequentialGroup(
+                                        new FollowPath(Intake54),
+                                        new Delay(0.5),
+//                                        new FollowPath(FarAdjust),
+                                        new FollowPath(Shoot6, true)),
+
+                                new Delay(0.25),
+                                transferUpFor(0.76)
 
                 )
+        )
         );
     }
+
     @Override
     public void onInit() {
         paths();

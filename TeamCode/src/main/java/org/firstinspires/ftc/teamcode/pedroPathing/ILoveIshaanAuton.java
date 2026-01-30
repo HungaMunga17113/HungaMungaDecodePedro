@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
-import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -20,7 +19,6 @@ import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Transfernf;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
-import dev.nextftc.core.commands.groups.ParallelRaceGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
