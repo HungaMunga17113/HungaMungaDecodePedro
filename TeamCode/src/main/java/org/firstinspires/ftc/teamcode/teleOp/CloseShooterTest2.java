@@ -135,8 +135,8 @@ public class CloseShooterTest2 extends OpMode {
     public void shootTest() {
         servo.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
-        leftOuttake.setVelocity(ticksPerSecond);
-        rightOuttake.setVelocity(ticksPerSecond);
+        //leftOuttake.setVelocity(ticksPerSecond);
+        //rightOuttake.setVelocity(ticksPerSecond);
 
         double intakePower = 1;
         if (gamepad1.right_trigger > 0.15) {

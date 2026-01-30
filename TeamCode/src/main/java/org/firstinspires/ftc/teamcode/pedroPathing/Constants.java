@@ -22,18 +22,18 @@ public class Constants {
                 .lateralZeroPowerAcceleration(-55.0414278486583)
                 .translationalPIDFCoefficients(new PIDFCoefficients(0.07, 0, 0.01, 0.08))
                 .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.05,0,0.001,0.008))
-                .headingPIDFCoefficients(new PIDFCoefficients(1.5, 0, 0.08, 0.05)) //1.3
-                .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(1.3, 0, 0.06, 0)) //1.1
+                .headingPIDFCoefficients(new PIDFCoefficients(1.9, 0, 0.08, 0.05)) //1.3
+                .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(1.75, 0, 0.06, 0)) //1.1
                 .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.055,0.0,0.0001,0.6,0.01))
                 .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.055,0,0.000067,0.6,0.02))
-                .centripetalScaling(0.0006)
+                .centripetalScaling(0.000575)
                 .useSecondaryTranslationalPIDF(true)
                 .useSecondaryHeadingPIDF(true)
                 .useSecondaryDrivePIDF(true)
                 .mass(10.61406);
 
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 50, 1.5, 1.4);
+    public static PathConstraints pathConstraints = new PathConstraints(0.99, 50, 1.6, 1.5);
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(0)
             .strafePodX(-6.9375)
@@ -44,9 +44,9 @@ public class Constants {
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .xVelocity(90)
+            .xVelocity(85)
             //79.7965
-            .yVelocity(70)
+            .yVelocity(80)
             //62.5067153089624
             .rightFrontMotorName("rightFront")
             .rightRearMotorName("rightBack")

@@ -51,7 +51,6 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
     public PathChain Gate;
     public PathChain Shoot3;
     public PathChain Intake67;
-    public PathChain Intake76;
     public PathChain Shoot4;
     public PathChain TurnGoal1;
     public PathChain Intake89;
@@ -70,7 +69,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
 
                                 new Pose(48.100, 95.545)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(133))
+                ).setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(135))
 
                 .build();
 
@@ -79,7 +78,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
                         new BezierCurve(
                                 new Pose(48.100, 95.545),
                                 new Pose(40.329, 84.491),
-                                new Pose(15.881, 84.491)
+                                new Pose(16.301, 84.491)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -88,11 +87,11 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
         Shoot2 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(15.881, 84.491),
+                                new Pose(16.301, 84.491),
 
                                 new Pose(48.171, 95.400)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(133))
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(135))
 
                 .build();
 
@@ -100,9 +99,9 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
                 .pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(48.171, 95.400),
-                                new Pose(42.488, 58.939),
-                                new Pose(32.117, 58.939),
-                                new Pose(10.573, 58.939)
+                                new Pose(45.488, 56.939),
+                                new Pose(32.117, 56.939),
+                                new Pose(11.573, 56.939)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -111,8 +110,8 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
         Gate = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(10.573, 58.939),
-                                new Pose(34.433, 58.939),
+                                new Pose(11.573, 56.939),
+                                new Pose(34.433, 56.939),
                                 new Pose(17.318, 69.509)
                         )
                 ).setConstantHeadingInterpolation(Math.toRadians(180))
@@ -126,27 +125,16 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
 
                                 new Pose(48.171, 95.545)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(133))
+                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(135))
 
                 .build();
 
         Intake67 = PedroComponent.follower()
                 .pathBuilder().addPath(
-                        new BezierLine(
+                        new BezierCurve(
                                 new Pose(48.171, 95.545),
-
-                                new Pose(48.171, 35.993)
-                        )
-                ).setTangentHeadingInterpolation()
-
-                .build();
-
-        Intake76 = PedroComponent.follower()
-                .pathBuilder().addPath(
-                        new BezierLine(
-                                new Pose(48.171, 35.993),
-
-                                new Pose(10.068, 35.993)
+                                new Pose(61.761, 34.570),
+                                new Pose(9.831, 34.570)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -155,11 +143,12 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
         Shoot4 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(10.068, 35.993),
+                                new Pose(9.831, 34.570),
 
                                 new Pose(44.138, 92.936)
                         )
                 ).setTangentHeadingInterpolation()
+                .setReversed()
 
                 .build();
 
@@ -170,7 +159,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
 
                                 new Pose(48.171, 95.545)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(57), Math.toRadians(133))
+                ).setLinearHeadingInterpolation(Math.toRadians(237), Math.toRadians(130))
 
                 .build();
 
@@ -178,8 +167,8 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
                 .pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(48.171, 95.545),
-                                new Pose(9.165, 53.330),
-                                new Pose(9.165, 9.659)
+                                new Pose(52.746, 12.533),
+                                new Pose(11.966, 12.533)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -188,7 +177,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
         FarAdjust = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(9.165, 9.659),
+                                new Pose(11.966, 12.533),
                                 new Pose(23.764, 40.198),
                                 new Pose(33.837, 11.794),
                                 new Pose(9.165, 9.659)
@@ -200,11 +189,12 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
         Shoot6 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(9.165, 9.659),
+                                new Pose(11.966, 12.533),
 
                                 new Pose(52.916, 105.984)
                         )
                 ).setTangentHeadingInterpolation()
+                .setReversed()
 
                 .build();
 
@@ -215,7 +205,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
 
                                 new Pose(57.888, 111.081)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(64), Math.toRadians(150))
+                ).setLinearHeadingInterpolation(Math.toRadians(244), Math.toRadians(155))
 
                 .build();
     }
@@ -224,7 +214,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
 
     private Command set_hood() {
         return new SequentialGroup(
-                Hoodnf.INSTANCE.setHoodPos(0.393)
+                Hoodnf.INSTANCE.setHoodPos(0.42)
         );
 
     }
@@ -240,7 +230,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
     private Command baseState() {
         return new ParallelGroup(
                 Transfernf.INSTANCE.idle(),
-                Hoodnf.INSTANCE.setHoodPos(0.393)
+                Hoodnf.INSTANCE.setHoodPos(0.42)
         );
     }
     private Command autonomous() {
@@ -257,7 +247,7 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
                                 baseState()
                         ),
                         new Delay(1),
-                        transferUpFor(0.76),
+                        transferUpFor(0.75),
 
 
                         //SET 2
@@ -267,8 +257,8 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
                                         new FollowPath(Shoot2, true)
                                 )
                         ),
-                        new Delay(0.25),
-                        transferUpFor(0.76),
+                        new Delay(0.45),
+                        transferUpFor(0.75),
 
                         //SET 3 Human Player
                         new ParallelGroup(
@@ -279,28 +269,26 @@ public class ILoveBlueNikethAuton extends NextFTCOpMode {
                                         new FollowPath(Shoot3, true)
                                 )
                         ),
-                        new Delay(0.25),
-                        transferUpFor(0.76),
+                        new Delay(0.45),
+                        transferUpFor(0.75),
                         new ParallelGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake67),
-                                        new FollowPath(Intake76),
                                         new FollowPath(Shoot4),
                                         new FollowPath(TurnGoal1,true)
                                 )
                         ),
-                        new Delay(0.25),
-                        transferUpFor(0.76),
+                        new Delay(0.45),
+                        transferUpFor(0.75),
                         //SET 4
                         new SequentialGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake89),
-                                        new FollowPath(FarAdjust),
                                         new FollowPath(Shoot6),
                                         new FollowPath(Shoot7, true)),
 
-                                new Delay(0.25),
-                                transferUpFor(0.76)
+                                new Delay(0.45),
+                                transferUpFor(0.75)
                         )
 
 
