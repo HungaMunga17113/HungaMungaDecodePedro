@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.pedroPathing.EMAutons;
 
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
@@ -8,6 +8,7 @@ import com.pedropathing.paths.PathChain;
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Hoodnf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Intakenf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Shooternf;

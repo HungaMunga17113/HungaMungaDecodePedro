@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.pedroPathing.EMAutons;
 
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
@@ -8,6 +8,7 @@ import com.pedropathing.paths.PathChain;
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Hoodnf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Intakenf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Shooternf;
@@ -26,8 +27,8 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 //
 @Autonomous
 @Configurable
-public class BlueClose18 extends NextFTCOpMode {
-    public BlueClose18() {
+public class BlueClose15 extends NextFTCOpMode {
+    public BlueClose15() {
         addComponents(
                 new SubsystemComponent(
                         Intakenf.INSTANCE, Hoodnf.INSTANCE,
@@ -48,10 +49,8 @@ public class BlueClose18 extends NextFTCOpMode {
     public PathChain Shoot4;
     public PathChain Intake4;
     public PathChain Shoot5;
-    public PathChain Intake5;
-    public PathChain Shoot6;
 
-    public PathChain End;
+//    public PathChain End;
 
     private void paths() {
         PedroComponent.follower().setStartingPose(new Pose(28.231, 132.138, Math.toRadians(143)));
@@ -153,26 +152,16 @@ public class BlueClose18 extends NextFTCOpMode {
 
                 .build();
 
-        Intake5 = PedroComponent.follower()
-                .pathBuilder().addPath(
-                        new BezierCurve(
-                                new Pose(59.442, 84.241),
-                                new Pose(64.386, 28.607),
-                                new Pose(12.574, 35.749)
-                        )
-                ).setLinearHeadingInterpolation(Math.toRadians(135),Math.toRadians(180))
-
-                .build();
-
-        Shoot6 = PedroComponent.follower()
-                .pathBuilder().addPath(
-                        new BezierCurve(
-                                new Pose(15.049, 84.348),
-                                new Pose(59.442, 84.241)
-                        )
-                ).setLinearHeadingInterpolation(Math.toRadians(180),Math.toRadians(135))
-
-                .build();
+//        Intake5 = PedroComponent.follower()
+//                .pathBuilder().addPath(
+//                        new BezierCurve(
+//                                new Pose(59.442, 84.241),
+//                                new Pose(64.386, 28.607),
+//                                new Pose(12.574, 35.749)
+//                        )
+//                ).setLinearHeadingInterpolation(Math.toRadians(135),Math.toRadians(180))
+//
+//                .build();
 
 //        End = PedroComponent.follower()
 //                .pathBuilder().addPath(
@@ -223,7 +212,6 @@ public class BlueClose18 extends NextFTCOpMode {
                         new ParallelGroup(
                                 new SequentialGroup(
                                         new FollowPath(Intake1),
-                                        new Delay(0.3),
                                         new FollowPath(Shoot2, true)
                                 )
 
@@ -263,20 +251,20 @@ public class BlueClose18 extends NextFTCOpMode {
 
 //                                    Shooternf.INSTANCE.close()
                         ),
-                        transferUpFor(1),
+                        transferUpFor(1)
 
-                        new ParallelGroup(
-                                new SequentialGroup(
-                                        new FollowPath(Intake5),
-                                        new FollowPath(Shoot6, true)
+//                        new ParallelGroup(
+//                                new SequentialGroup(
+//                                        new FollowPath(Intake5)
+//                                        new FollowPath(Shoot5, true)
                                 )
 
 //                                    Shooternf.INSTANCE.close()
-                        )
+//                        )
 
 
-                )
-        );
+                );
+
     }
     @Override
     public void onInit() {
