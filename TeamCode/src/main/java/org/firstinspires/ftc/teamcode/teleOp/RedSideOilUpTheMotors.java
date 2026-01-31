@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 
 @Configurable
 @TeleOp
-public class MyMomsKindaHomeless extends OpMode {
+public class RedSideOilUpTheMotors extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
     private Follower follower;
     //Sloth
@@ -54,19 +54,19 @@ public class MyMomsKindaHomeless extends OpMode {
     public static double minimum = 0;
     //0 is close
     //1480 is far
-    // static double transferPower = 0.75;
+    public static double transferPower = 0.775;
     //1 is close
     //0.85 is far
-    double maxTransfer = 1;
-    double minTransfer = 0.7;
     double maxHood = 0.565;
     double minHood = 0.31;
     private Supplier<PathChain> pathChain;
 
-    static final double targetX = 0;
+    static final double targetX = 144;
     static final double targetY = 144;
     double minVelocity = 950;
     double maxVelocity = 1765;
+    double maxTransfer = 1;
+    double minTransfer = 0.7;
     private boolean automatedDrive;
 
     double minDistance = 33.941125497;
@@ -128,13 +128,12 @@ public class MyMomsKindaHomeless extends OpMode {
     }
     private void Drive() {
         double slowModeMultiplier = 1 - (0.6 * gamepad1.left_trigger);
-        follower.update();
         double robotX = follower.getPose().getX();
         double robotY = follower.getPose().getY();
-        double alignX = targetX + robotX;
+        double alignX = targetX - robotX;
         double alignY = targetY - robotY;
         double angle = Math.atan(alignX/alignY);
-        double turnTowards =  85+Math.toDegrees(angle);
+        double turnTowards =  5+Math.toDegrees(angle);
         if (!automatedDrive) {
             //Make the last parameter false for field-centric
             //In case the drivers want to use a "slowMode" you can scale the vectors
@@ -150,7 +149,7 @@ public class MyMomsKindaHomeless extends OpMode {
         if (gamepad1.aWasPressed()) {
             pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
                     .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX(), follower.getPose().getY()-0.01))))
-                    .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(turnTowards), 0.8))
+                    .setHeadingInterpolation(HeadingInterpolator.facingPoint(new Pose(144,144)))
                     .build();
             follower.followPath(pathChain.get());
             automatedDrive = true;
@@ -175,7 +174,6 @@ public class MyMomsKindaHomeless extends OpMode {
                 maxTransfer
         );
 
-
         double hoodPosition = Range.clip(
                 maxHood -
                         (distance - minDistance) * (maxHood - minHood) / (maxDistance - minDistance),
@@ -198,7 +196,11 @@ public class MyMomsKindaHomeless extends OpMode {
                         20 * distance +
                         1600;
          */
-
+        if (shooterVelocity>1350) {
+            minimum=leftOuttake.getVelocity()-40;
+        }else{
+            minimum=0;
+        }
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(shooterVelocity);
@@ -238,4 +240,3 @@ public class MyMomsKindaHomeless extends OpMode {
         EndPose.lastY = follower().getPose().getY();
         EndPose.lastHeading = follower().getHeading();    }
 }
-
