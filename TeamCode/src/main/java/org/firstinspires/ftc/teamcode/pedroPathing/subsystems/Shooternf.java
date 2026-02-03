@@ -19,12 +19,12 @@ public class Shooternf implements Subsystem {
     public MotorGroup shooter;
 
     private final ControlSystem closeShooterController = ControlSystem.builder()
-            .velPid(2.24, 0, 0.003)
+            .velPid(2.2445, 0, 0.003)
             .basicFF(0.002)
             .build();
 
     private final ControlSystem farShooterController = ControlSystem.builder()
-            .velPid(0.38, 0, 0.003)
+            .velPid(2.47, 0, 0.003)
             .basicFF(0.006)
             .build();
 
@@ -40,12 +40,12 @@ public class Shooternf implements Subsystem {
 
     public Command close() {
         currentControllerMode = ShooterControllerMode.CLOSE;
-        return new RunToVelocity(closeShooterController, -1185).requires(shooter);
+        return new RunToVelocity(closeShooterController, -1200).requires(shooter);
     }
 
     public Command far() {
         currentControllerMode = ShooterControllerMode.FAR;
-        return new RunToVelocity(farShooterController, -1500).requires(shooter);
+        return new RunToVelocity(farShooterController, -1540).requires(shooter);
     }
 
     public Command idle() {

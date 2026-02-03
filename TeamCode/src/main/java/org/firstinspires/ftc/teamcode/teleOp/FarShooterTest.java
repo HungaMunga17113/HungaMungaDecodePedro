@@ -43,16 +43,16 @@ public class FarShooterTest extends OpMode {
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 1530;
+    public static double ticksPerSecond = 1520;
     //1500 is far
     //1250 is close
     public static double servoPos = 0.335;
     //0.335 is far
     //0.393 is close
-    public static double minimum = 1510;
+    public static double minimum = 0;
     //0 is close
     //1480 is far
-    public static double transferPower = 0.85;
+    public static double transferPower = 0.9;
     //1 is close
     //0.85 is far
     double maxHood = 0.57;
@@ -67,7 +67,8 @@ public class FarShooterTest extends OpMode {
 
     double minDistance = 33.941125497;
     double maxDistance = 190.91883092;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(708.5, 0, 0.015, 11.7);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(334.3, 0, 0.1, 14.6);
+    //708.5, 0, 0.015, 11.7
     @Override
     public void init() {
         follower = Constants.createFollower(hardwareMap);

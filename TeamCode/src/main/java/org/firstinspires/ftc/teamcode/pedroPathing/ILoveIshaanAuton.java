@@ -296,6 +296,7 @@ public class ILoveIshaanAuton extends NextFTCOpMode {
     }
     @Override
     public void onStop() {
+        EndPose.endPose = follower().getPose();
         EndPose.lastX = follower().getPose().getX();
         EndPose.lastY = follower().getPose().getY();
         EndPose.lastHeading = follower().getHeading();    }

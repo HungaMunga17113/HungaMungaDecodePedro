@@ -57,8 +57,8 @@ public class CloseShooterTest2 extends OpMode {
     public static double transferPower = 1;
     //1 is close
     //0.85 is far
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(450, 0, 0.012, 11.7);
-//708.75
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(334.3, 0, 0.1, 14.6);
+//450, 0, 0.012, 11.7
     public void init() {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -136,9 +136,20 @@ public class CloseShooterTest2 extends OpMode {
         servo.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
-        //leftOuttake.setVelocity(ticksPerSecond);
-        //rightOuttake.setVelocity(ticksPerSecond);
-
+        leftOuttake.setVelocity(ticksPerSecond);
+        rightOuttake.setVelocity(ticksPerSecond);
+        if (gamepad1.b){
+            ticksPerSecond = 200;
+        } else if (gamepad1.a){
+            ticksPerSecond = 900;
+        } else {
+            ticksPerSecond = 1200;
+        }
+        if (gamepad1.left_bumper) {
+            servoPos = 0.5;
+        } else {
+            servoPos = 0.35;
+        }
         double intakePower = 1;
         if (gamepad1.right_trigger > 0.15) {
             intake.setPower(intakePower);

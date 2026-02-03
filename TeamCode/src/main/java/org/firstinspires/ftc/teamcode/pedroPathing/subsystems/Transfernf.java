@@ -20,6 +20,9 @@ public class Transfernf implements Subsystem {
     public Command out() {
         return new SetPower(transfer, -0.9);
     }
+    public Command outSlow() {
+        return new SetPower(transfer, -0.6);
+    }
 
     public Command gateIntake() {
         return new SequentialGroup(

@@ -45,7 +45,7 @@ public class MyMomsKindaHomeless extends OpMode {
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 1225;
+    public static double ticksPerSecond = 0;
     //1500 is far
     //1250 is close
     public static double servoPos = 0.395;
@@ -58,20 +58,23 @@ public class MyMomsKindaHomeless extends OpMode {
     //1 is close
     //0.85 is far
     double maxTransfer = 1;
-    double minTransfer = 0.7;
-    double maxHood = 0.565;
-    double minHood = 0.31;
+    double minTransfer = 0.82;
+    double maxHood = 0.575;
+    double minHood = 0.34;
     private Supplier<PathChain> pathChain;
 
     static final double targetX = 0;
     static final double targetY = 144;
     double minVelocity = 950;
-    double maxVelocity = 1765;
+    double maxVelocity = 1550;
+    //1550
     private boolean automatedDrive;
 
-    double minDistance = 33.941125497;
-    double maxDistance = 160.91883092;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(450, 0, 0.02, 11.7);
+    double minDistance = 30.941125497;
+    double maxDistance = 148;
+    //160
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(334.3, 0, 0.1, 14.6);
+    //465, 0.0001, 0.05, 12.3
     @Override
     public void init() {
         follower = Constants.createFollower(hardwareMap);
@@ -134,7 +137,7 @@ public class MyMomsKindaHomeless extends OpMode {
         double alignX = targetX + robotX;
         double alignY = targetY - robotY;
         double angle = Math.atan(alignX/alignY);
-        double turnTowards =  85+Math.toDegrees(angle);
+        double turnTowards =  88.5+Math.toDegrees(angle);
         if (!automatedDrive) {
             //Make the last parameter false for field-centric
             //In case the drivers want to use a "slowMode" you can scale the vectors
@@ -147,7 +150,7 @@ public class MyMomsKindaHomeless extends OpMode {
             );
         }
         //Automated PathFollowing
-        if (gamepad1.aWasPressed()) {
+        if (gamepad1.a) {
             pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
                     .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX(), follower.getPose().getY()-0.01))))
                     .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(turnTowards), 0.8))
@@ -169,7 +172,7 @@ public class MyMomsKindaHomeless extends OpMode {
         double dy = targetY - robotY;
         double distance = Math.hypot(dx, dy);
         double transferPower = Range.clip(
-                maxTransfer -
+                minTransfer +
                         (distance - minDistance) * (maxTransfer - minTransfer) / (maxDistance - minDistance),
                 minTransfer,
                 maxTransfer
@@ -217,11 +220,11 @@ public class MyMomsKindaHomeless extends OpMode {
 
 
 
-        if (gamepad1.y && leftOuttake.getVelocity()>minimum) {
+        if (gamepad1.right_bumper && leftOuttake.getVelocity()>minimum) {
             transferTime.reset();
             transfer.setPower(transferPower);
 
-        } else if (gamepad1.right_bumper) {
+        } else if (gamepad1.y) {
             transfer.setPower(-transferPower);
         } else {
             transfer.setPower(0);
