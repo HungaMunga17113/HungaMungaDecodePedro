@@ -58,7 +58,7 @@ public class BlueFar9 extends NextFTCOpMode {
                         new BezierLine(
                                 new Pose(57.196, 8.972),
 
-                                new Pose(57.196, 15.093)
+                                new Pose(57.196, 15.091)
                         )
                 ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(115))
                 .build();
@@ -66,9 +66,9 @@ public class BlueFar9 extends NextFTCOpMode {
         Intake1 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(57.196, 15.093),
-                                new Pose(55.304, 37.794),
-                                new Pose(10.813, 37.794)
+                                new Pose(57.196, 15.091),
+                                new Pose(55.304, 38.365),
+                                new Pose(10.813, 38.365)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -77,7 +77,7 @@ public class BlueFar9 extends NextFTCOpMode {
         Shoot2 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(10.813, 37.794),
+                                new Pose(10.813, 38.365),
 
                                 new Pose(57.196, 15.093)
                         )
@@ -92,7 +92,7 @@ public class BlueFar9 extends NextFTCOpMode {
                                 new HeadingInterpolator.PiecewiseNode(
                                         0.7,
                                         1.0,
-                                        HeadingInterpolator.facingPoint(new Pose(3,144))
+                                        HeadingInterpolator.facingPoint(3,144)
                                 )
                         )
                 )
@@ -102,8 +102,8 @@ public class BlueFar9 extends NextFTCOpMode {
                 .pathBuilder().addPath(
                         new BezierCurve(
                                 new Pose(57.196, 15.093),
-                                new Pose(12.215, 30.584),
-                                new Pose(12.215, 13.701)
+                                new Pose(12.123, 31.584),
+                                new Pose(12.123, 9.823)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -112,7 +112,7 @@ public class BlueFar9 extends NextFTCOpMode {
         Shoot3 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(12.215, 13.701),
+                                new Pose(12.123, 9.823),
 
                                 new Pose(57.196, 15.093)
                         )
@@ -126,8 +126,9 @@ public class BlueFar9 extends NextFTCOpMode {
                                 ),
                                 new HeadingInterpolator.PiecewiseNode(
                                         0.7,
-                                        1.0,
+                                        1,
                                         HeadingInterpolator.facingPoint(new Pose(3,144))
+
                                 )
                         )
                 )
@@ -138,7 +139,7 @@ public class BlueFar9 extends NextFTCOpMode {
                         new BezierLine(
                                 new Pose(57.196, 15.093),
 
-                                new Pose(37.318, 12.551)
+                                new Pose(36.245, 12.501)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -170,19 +171,20 @@ public class BlueFar9 extends NextFTCOpMode {
     }
     private Command autonomous() {
         return new ParallelGroup(
-                //INTAKE ALWAYS ON
-                Intakenf.INSTANCE.in(),
-                Shooternf.INSTANCE.far(),
-                //MAIN SEQUENCE
+//                //INTAKE ALWAYS ON
+//                Intakenf.INSTANCE.in(),
+//                Shooternf.INSTANCE.far(),
+//                //MAIN SEQUENCE
                 new SequentialGroup(
-
+                        Intakenf.INSTANCE.in(),
+                        Shooternf.INSTANCE.far(),
                         //Preloads
                         new ParallelGroup(
                                 new FollowPath(Shoot1, true),
                                 baseState()
                         ),
-                        new Delay(2),
-                        transferUpFor(2),
+                        new Delay(0.8),
+                        transferUpFor(2.5),
 
 
                         //SET 2
@@ -192,8 +194,8 @@ public class BlueFar9 extends NextFTCOpMode {
                                         new FollowPath(Shoot2, true)
                                 )
                         ),
-                        new Delay(0.5),
-                        transferUpFor(2),
+                        new Delay(0.6),
+                        transferUpFor(2.5),
 
                         //SET 3 Human Player
                         new ParallelGroup(
@@ -202,8 +204,8 @@ public class BlueFar9 extends NextFTCOpMode {
                                         new FollowPath(Shoot3, true)
                                 )
                         ),
-                        new Delay(0.5),
-                        transferUpFor(2),
+                        new Delay(0.6),
+                        transferUpFor(2.5),
                         new FollowPath(Park, true)
 
 

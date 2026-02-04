@@ -46,9 +46,9 @@ public class CloseShooterTest2 extends OpMode {
      */
     ElapsedTime transferTime = new ElapsedTime();
     public static double ticksPerSecond = 1265;
-    //1500 is far
+    //1500 is far   5
     //1250 is close
-    public static double servoPos = 0.4;
+    public static double servoPos = 0.7;
     //0.335 is far
     //0.393 is close
     public static double minimum = 0;
