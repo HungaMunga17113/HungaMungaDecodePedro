@@ -5,6 +5,7 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
@@ -27,7 +28,7 @@ import dev.nextftc.extensions.pedro.TurnTo;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-
+@Disabled
 @Autonomous(name = "Shooter Test")
 public class ShooterTest extends NextFTCOpMode {
     public ShooterTest() {

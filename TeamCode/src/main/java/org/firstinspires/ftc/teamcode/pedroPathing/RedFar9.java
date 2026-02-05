@@ -29,8 +29,8 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 //
 @Autonomous
 @Configurable
-public class BlueFar9 extends NextFTCOpMode {
-    public BlueFar9() {
+public class RedFar9 extends NextFTCOpMode {
+    public RedFar9() {
         addComponents(
                 new SubsystemComponent(
                         Intakenf.INSTANCE, Hoodnf.INSTANCE,
@@ -50,25 +50,25 @@ public class BlueFar9 extends NextFTCOpMode {
     public PathChain Park;
 
     public void paths() {
-        PedroComponent.follower().setStartingPose(new Pose(57.196261682242984, 8.971962616822431, Math.toRadians(180)));
+        PedroComponent.follower().setStartingPose(new Pose(86.804, 8.972, Math.toRadians(0)));
 
 
         Shoot1 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(57.196, 8.972),
+                                new Pose(86.804, 8.972),
 
-                                new Pose(57.196, 15.091)
+                                new Pose(86.804, 15.091)
                         )
-                ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(115))
+                ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(65))
                 .build();
 
         Intake1 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(57.196, 15.091),
-                                new Pose(55.304, 38.365),
-                                new Pose(10.813, 38.365)
+                                new Pose(86.804, 15.091),
+                                new Pose(88.696, 38.365),
+                                new Pose(133.187, 38.365)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -77,9 +77,9 @@ public class BlueFar9 extends NextFTCOpMode {
         Shoot2 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(10.813, 38.365),
+                                new Pose(133.187, 38.365),
 
-                                new Pose(57.196, 15.093)
+                                new Pose(86.804, 15.093)
                         )
                 )
                 .setHeadingInterpolation(
@@ -92,7 +92,7 @@ public class BlueFar9 extends NextFTCOpMode {
                                 new HeadingInterpolator.PiecewiseNode(
                                         0.7,
                                         1.0,
-                                        HeadingInterpolator.facingPoint(3,144)
+                                        HeadingInterpolator.facingPoint(141,144)
                                 )
                         )
                 )
@@ -101,9 +101,9 @@ public class BlueFar9 extends NextFTCOpMode {
         Intake2 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierCurve(
-                                new Pose(57.196, 15.093),
-                                new Pose(12.123, 31.584),
-                                new Pose(12.123, 9.823)
+                                new Pose(86.804, 15.093),
+                                new Pose(131.877, 31.584),
+                                new Pose(131.877, 9.823)
                         )
                 ).setTangentHeadingInterpolation()
 
@@ -112,9 +112,9 @@ public class BlueFar9 extends NextFTCOpMode {
         Shoot3 = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(12.123, 9.823),
+                                new Pose(131.877, 9.823),
 
-                                new Pose(57.196, 15.093)
+                                new Pose(86.804, 15.093)
                         )
                 )
                 .setHeadingInterpolation(
@@ -127,7 +127,7 @@ public class BlueFar9 extends NextFTCOpMode {
                                 new HeadingInterpolator.PiecewiseNode(
                                         0.7,
                                         1,
-                                        HeadingInterpolator.facingPoint(new Pose(3,144))
+                                        HeadingInterpolator.facingPoint(new Pose(141,144))
 
                                 )
                         )
@@ -137,9 +137,9 @@ public class BlueFar9 extends NextFTCOpMode {
         Park = PedroComponent.follower()
                 .pathBuilder().addPath(
                         new BezierLine(
-                                new Pose(57.196, 15.093),
+                                new Pose(86.804, 15.093),
 
-                                new Pose(36.245, 12.501)
+                                new Pose(107.755, 12.501)
                         )
                 ).setTangentHeadingInterpolation()
 

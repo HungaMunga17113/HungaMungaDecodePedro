@@ -198,7 +198,7 @@ public class ILoveIshaanAuton extends NextFTCOpMode {
 
     private Command set_hood() {
         return new SequentialGroup(
-                Hoodnf.INSTANCE.setHoodPos(0.393)
+                Hoodnf.INSTANCE.setHoodPos(0.62)
         );
 
     }
@@ -214,7 +214,7 @@ public class ILoveIshaanAuton extends NextFTCOpMode {
     private Command baseState() {
         return new ParallelGroup(
                 Transfernf.INSTANCE.idle(),
-                Hoodnf.INSTANCE.setHoodPos(0.393)
+                Hoodnf.INSTANCE.setHoodPos(0.62)
         );
     }
     private Command autonomous() {

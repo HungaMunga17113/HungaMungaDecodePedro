@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
-
+@Disabled
 @TeleOp
 public class RedParkTele extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);

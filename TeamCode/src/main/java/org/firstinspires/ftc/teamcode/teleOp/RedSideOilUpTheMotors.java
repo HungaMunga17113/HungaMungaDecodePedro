@@ -57,21 +57,21 @@ public class RedSideOilUpTheMotors extends OpMode {
     public static double transferPower = 0.775;
     //1 is close
     //0.85 is far
-    double maxHood = 0.575;
-    double minHood = 0.34;
+    double maxHood = 0.76;
+    double minHood = 0.55;
     private Supplier<PathChain> pathChain;
 
     static final double targetX = 144;
     static final double targetY = 144;
-    double minVelocity = 950;
-    double maxVelocity = 1550;
+    double minVelocity = 1005;
+    double maxVelocity = 1615;
     double maxTransfer = 1;
     double minTransfer = 0.82;
     private boolean automatedDrive;
 
     double minDistance = 33.941125497;
     double maxDistance = 148;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(334.3, 0, 0.1, 14.6);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.085, 14.6);
     @Override
     public void init() {
         follower = Constants.createFollower(hardwareMap);
@@ -196,11 +196,7 @@ public class RedSideOilUpTheMotors extends OpMode {
                         20 * distance +
                         1600;
          */
-        if (shooterVelocity>1350) {
-            minimum=leftOuttake.getVelocity()-40;
-        }else{
-            minimum=0;
-        }
+
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(shooterVelocity);
@@ -227,6 +223,12 @@ public class RedSideOilUpTheMotors extends OpMode {
             transfer.setPower(-transferPower);
         } else {
             transfer.setPower(0);
+
+            if (shooterVelocity>=1360) {
+                minimum = shooterVelocity-25;
+            } else {
+                minimum = 0;
+            }
         }
         telemetry.addData("Ticks/s", ticksPerSecond);
         telemetry.addData("Left Velocity", leftOuttake.getVelocity());
@@ -234,6 +236,7 @@ public class RedSideOilUpTheMotors extends OpMode {
         telemetry.addData("Error", ticksPerSecond-leftOuttake.getVelocity());
         telemetry.update();
     }
+
     public void onStop() {
         EndPose.endPose = follower().getPose();
         EndPose.lastX = follower().getPose().getX();

@@ -9,6 +9,7 @@ import com.pedropathing.paths.PathChain;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.EndPose;
@@ -28,6 +29,7 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 //
+@Disabled
 @Autonomous
 @Configurable
 public class Blue15EMAutonClose32Sec extends NextFTCOpMode {

@@ -45,10 +45,10 @@ public class CloseShooterTest2 extends OpMode {
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 1265;
+    public static double ticksPerSecond = 1275;
     //1500 is far   5
     //1250 is close
-    public static double servoPos = 0.7;
+    public static double servoPos = 0.575;
     //0.335 is far
     //0.393 is close
     public static double minimum = 0;
@@ -57,7 +57,7 @@ public class CloseShooterTest2 extends OpMode {
     public static double transferPower = 1;
     //1 is close
     //0.85 is far
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(334.3, 0, 0.1, 14.6);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.1, 14.6);
 //450, 0, 0.012, 11.7
     public void init() {
 
@@ -84,8 +84,8 @@ public class CloseShooterTest2 extends OpMode {
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         transfer.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //0.44 low limit
-        //0.1 high limit
+        //0.81 low limit
+        //0.5 high limit
         leftOuttake = hardwareMap.get(DcMotorEx.class, "leftOuttake");
         rightOuttake = hardwareMap.get(DcMotorEx.class, "rightOuttake");
 
@@ -96,6 +96,7 @@ public class CloseShooterTest2 extends OpMode {
         rightOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         servo = hardwareMap.get(Servo.class, "Axon");
+
 
     }
 
@@ -138,6 +139,7 @@ public class CloseShooterTest2 extends OpMode {
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(ticksPerSecond);
         rightOuttake.setVelocity(ticksPerSecond);
+        /*
         if (gamepad1.b){
             ticksPerSecond = 200;
         } else if (gamepad1.a){
@@ -149,7 +151,7 @@ public class CloseShooterTest2 extends OpMode {
             servoPos = 0.5;
         } else {
             servoPos = 0.35;
-        }
+        }*/
         double intakePower = 1;
         if (gamepad1.right_trigger > 0.15) {
             intake.setPower(intakePower);

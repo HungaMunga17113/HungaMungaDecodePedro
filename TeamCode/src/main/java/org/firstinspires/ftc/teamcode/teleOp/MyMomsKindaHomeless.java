@@ -59,21 +59,21 @@ public class MyMomsKindaHomeless extends OpMode {
     //0.85 is far
     double maxTransfer = 1;
     double minTransfer = 0.82;
-    double maxHood = 0.575;
-    double minHood = 0.34;
+    double maxHood = 0.7;
+    double minHood = 0.55;
     private Supplier<PathChain> pathChain;
 
     static final double targetX = 0;
     static final double targetY = 144;
-    double minVelocity = 950;
-    double maxVelocity = 1550;
+    double minVelocity = 1005;
+    double maxVelocity = 1615;
     //1550
     private boolean automatedDrive;
 
     double minDistance = 30.941125497;
     double maxDistance = 148;
     //160
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(334.3, 0, 0.1, 14.6);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.085, 14.6);
     //465, 0.0001, 0.05, 12.3
     @Override
     public void init() {
@@ -202,6 +202,7 @@ public class MyMomsKindaHomeless extends OpMode {
                         1600;
          */
 
+
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(shooterVelocity);
@@ -228,6 +229,12 @@ public class MyMomsKindaHomeless extends OpMode {
             transfer.setPower(-transferPower);
         } else {
             transfer.setPower(0);
+
+            if (shooterVelocity>=1360) {
+                minimum = shooterVelocity-25;
+            } else {
+                minimum = 0;
+            }
         }
         telemetry.addData("Ticks/s", ticksPerSecond);
         telemetry.addData("Left Velocity", leftOuttake.getVelocity());

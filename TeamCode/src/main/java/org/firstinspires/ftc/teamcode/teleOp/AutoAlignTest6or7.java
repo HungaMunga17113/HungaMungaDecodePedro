@@ -9,6 +9,7 @@ import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -28,7 +29,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
+@Disabled
 @Configurable
 @TeleOp
 public class AutoAlignTest6or7 extends OpMode {

@@ -10,6 +10,7 @@ import com.pedropathing.paths.PathChain;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Hoodnf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Intakenf;
@@ -26,6 +27,7 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 //
+@Disabled
 @Autonomous
 public class IshaanTest extends NextFTCOpMode {
     public IshaanTest() {

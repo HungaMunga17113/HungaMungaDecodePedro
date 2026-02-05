@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import dev.nextftc.core.components.BindingsComponent;
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Shooternf;
 import org.firstinspires.ftc.teamcode.pedroPathing.subsystems.Transfernf;
 
 import java.util.Optional;
-
+@Disabled
 @TeleOp
 public class NfPIDTuner extends NextFTCOpMode {
 
