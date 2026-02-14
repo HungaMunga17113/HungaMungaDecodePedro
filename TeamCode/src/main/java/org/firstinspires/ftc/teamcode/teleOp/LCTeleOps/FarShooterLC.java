@@ -1,9 +1,15 @@
-package org.firstinspires.ftc.teamcode.teleOp;
+package org.firstinspires.ftc.teamcode.teleOp.LCTeleOps;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.configurables.annotations.Configurable;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.HeadingInterpolator;
+import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,29 +17,22 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.teamcode.pedroPathing.Tuning;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.follower.FollowerConstants;
-import com.pedropathing.ftc.FollowerBuilder;
-import com.pedropathing.ftc.drivetrains.MecanumConstants;
-import com.pedropathing.ftc.localization.constants.PinpointConstants;
-import com.pedropathing.paths.PathConstraints;
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.pedroPathing.EndPose;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+@Config
 @Configurable
 @TeleOp
-public class CloseShooterTest2 extends OpMode {
+public class FarShooterLC extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
-    Follower follower;
+    private Follower follower;
     //Sloth
     DcMotor intake;
     DcMotor transfer;
@@ -45,22 +44,40 @@ public class CloseShooterTest2 extends OpMode {
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 1275;
-    //1500 is far   5
+    public static double ticksPerSecond = 1520;
+    //1500 is far
     //1250 is close
-    public static double servoPos = 0.575;
+    public static double servoPos = 0.56;
     //0.335 is far
     //0.393 is close
-    public static double minimum = 0;
+    public static double minimum = 1500;
     //0 is close
     //1480 is far
-    public static double transferPower = 1;
+    public static double transferPower = 0.9;
     //1 is close
     //0.85 is far
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.1, 14.6);
-//450, 0, 0.012, 11.7
-    public void init() {
+    double maxHood = 0.57;
+    double minHood = 0.32;
+    private Supplier<PathChain> pathChain;
 
+    static final double targetX = 144;
+    static final double targetY = 144;
+    double minVelocity = 1200;
+    double maxVelocity = 1900;
+    private boolean automatedDrive;
+
+    double minDistance = 33.941125497;
+    double maxDistance = 190.91883092;
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.1, 14.6);
+    //708.5, 0, 0.015, 11.7
+    @Override
+    public void init() {
+        follower = Constants.createFollower(hardwareMap);
+        //follower.setStartingPose(endPose == null ? new Pose() : endPose);
+        //follower.setPose(new Pose(EndPose.lastX, EndPose.lastY, EndPose.lastHeading));
+        follower = Constants.createFollower(hardwareMap);
+        follower.setStartingPose(EndPose.endPose);
+        follower.update();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         leftFront  = hardwareMap.get(DcMotor.class, "leftFront");
@@ -84,8 +101,8 @@ public class CloseShooterTest2 extends OpMode {
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         transfer.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //0.81 low limit
-        //0.5 high limit
+        //0.44 low limit
+        //0.1 high limit
         leftOuttake = hardwareMap.get(DcMotorEx.class, "leftOuttake");
         rightOuttake = hardwareMap.get(DcMotorEx.class, "rightOuttake");
 
@@ -96,41 +113,52 @@ public class CloseShooterTest2 extends OpMode {
         rightOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         servo = hardwareMap.get(Servo.class, "Axon");
-
-
     }
-
+    @Override
+    public void start() {
+        follower.startTeleopDrive(true);
+    }
+    @Override
     public void loop() {
+        follower.update();
         Drive();
         shootTest();
     }
     private void Drive() {
-        double max;
-
-        double axial = -gamepad1.left_stick_y;
-        double lateral = gamepad1.left_stick_x;
-        double yaw = gamepad1.right_stick_x;
-        double drivePower = 0.95 - (0.6 * gamepad1.left_trigger);
-
-        double leftFrontPower = axial + lateral + yaw;
-        double rightFrontPower = axial - lateral - yaw;
-        double leftBackPower = axial - lateral + yaw;
-        double rightBackPower = axial + lateral - yaw;
-
-        max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
-        max = Math.max(max, Math.abs(leftBackPower));
-        max = Math.max(max, Math.abs(rightBackPower));
-
-        if (max > 1.0) {
-            leftFrontPower /= max;
-            rightFrontPower /= max;
-            leftBackPower /= max;
-            rightBackPower /= max;
+        double slowModeMultiplier = 1 - (0.6 * gamepad1.left_trigger);
+        double robotX = follower.getPose().getX();
+        double robotY = follower.getPose().getY();
+        double alignX = targetX - robotX;
+        double alignY = targetY - robotY;
+        double angle = Math.atan(alignX/alignY);
+        double turnTowards =  1+Math.toDegrees(angle);
+        if (!automatedDrive) {
+            //Make the last parameter false for field-centric
+            //In case the drivers want to use a "slowMode" you can scale the vectors
+            //This is the normal version to use in the TeleOp
+            follower.setTeleOpDrive(
+                    Math.pow(-gamepad1.left_stick_y,3) * slowModeMultiplier,
+                    Math.pow(-gamepad1.left_stick_x,3) * slowModeMultiplier,
+                    Math.pow(-gamepad1.right_stick_x,3) * slowModeMultiplier,
+                    true // Robot Centric
+            );
         }
-        rightFront.setPower(rightFrontPower*drivePower);
-        rightBack.setPower(rightBackPower*drivePower);
-        leftFront.setPower(leftFrontPower*drivePower);
-        leftBack.setPower(leftBackPower*drivePower);
+        //Automated PathFollowing
+        if (gamepad1.a) {
+            pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
+                    .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX()+1, follower.getPose().getY()+1))))
+                    .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(turnTowards), 0.8))
+                    .build();
+
+            follower.followPath(pathChain.get());
+            automatedDrive = true;
+
+        }
+        //Stop automated following if the follower is done
+        if (automatedDrive && (gamepad1.bWasPressed() || !follower.isBusy())) {
+            follower.startTeleopDrive();
+            automatedDrive = false;
+        }
     }
 
     public void shootTest() {
@@ -140,19 +168,11 @@ public class CloseShooterTest2 extends OpMode {
         leftOuttake.setVelocity(ticksPerSecond);
         rightOuttake.setVelocity(ticksPerSecond);
         /*
-        if (gamepad1.b){
-            ticksPerSecond = 200;
-        } else if (gamepad1.a){
-            ticksPerSecond = 900;
-        } else {
-            ticksPerSecond = 1200;
-        }
-        if (gamepad1.left_bumper) {
-            servoPos = 0.5;
-        } else {
-            servoPos = 0.35;
-        }*/
+        leftOuttake.setPower(outtakePower);
+        rightOuttake.setPower(outtakePower);
+        */
         double intakePower = 1;
+
         if (gamepad1.right_trigger > 0.15) {
             intake.setPower(intakePower);
         } else if (gamepad1.x) {
@@ -162,14 +182,20 @@ public class CloseShooterTest2 extends OpMode {
         }
 
 
+        /*
+        if (ticksPerSecond<1350)
+            minimum = 0;
+            maximum = 1330;
+        } else {
+            minimum = 1475;
+            maximum = 1575;
+        }
 
+         */
 
-
-        if (gamepad1.y && leftOuttake.getVelocity()>minimum) {
-            transferTime.reset();
+        if (gamepad1.right_bumper && leftOuttake.getVelocity()>minimum) {
             transfer.setPower(transferPower);
-
-        } else if (gamepad1.right_bumper) {
+        } else if (gamepad1.y) {
             transfer.setPower(-transferPower);
         } else {
             transfer.setPower(0);

@@ -28,6 +28,9 @@ android {
         google()
         mavenCentral()
         maven { url = 'https://maven.brott.dev/' }
+        maven {
+            url "https://repo.dairy.foundation/releases"
+        }
     }
 }
 
@@ -42,5 +45,7 @@ dependencies {
     implementation 'dev.nextftc:bindings:1.0.1'
     //ishaan add this
     implementation 'dev.nextftc:control:1.0.0'
+    implementation "org.solverslib:core:0.3.3" // core
+    implementation "org.solverslib:pedroPathing:0.3.3" // pedroPathing
 }
 

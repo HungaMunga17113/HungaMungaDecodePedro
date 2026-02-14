@@ -20,20 +20,17 @@ import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.EndPose;
 import org.firstinspires.ftc.teamcode.teleOp.V2IntakeShooterTest;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.VisionPortalImpl;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @Configurable
 @TeleOp
-public class CloseShooterTest extends OpMode {
+public class V3ShooterTest extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
     private Follower follower;
     //Sloth
@@ -42,8 +39,7 @@ public class CloseShooterTest extends OpMode {
     DcMotorEx leftOuttake, rightOuttake;
     DcMotor leftFront, leftBack, rightFront, rightBack;
     public Servo servo;
-    private VisionPortal visionPortal;
-
+    public Servo servo2;
     //Initialize Variables
     /*
     (Button) Initialize Period, before you press start on your program.
@@ -66,6 +62,7 @@ public class CloseShooterTest extends OpMode {
     double maxHood = 0.7;
     double minHood = 0.55;
     private Supplier<PathChain> pathChain;
+
     static final double targetX = 144;
     static final double targetY = 144;
     double minVelocity = 1005;
@@ -79,12 +76,6 @@ public class CloseShooterTest extends OpMode {
     //1 is close
     //0.85 is far
     boolean lastA = false;
-
-    public enum shooterStates {
-        CLOSE,
-        FAR
-    }
-    private shooterStates mode = shooterStates.CLOSE;
 
     public static PIDFCoefficients coeffs = new PIDFCoefficients(333.2, 0, 0.07, 14.6);
     //450, 0, 0.012, 11.7
@@ -102,9 +93,7 @@ public class CloseShooterTest extends OpMode {
         leftBack   = hardwareMap.get(DcMotor.class, "leftBack");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightBack  = hardwareMap.get(DcMotor.class, "rightBack");
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam"))
-                .build();
+
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -117,6 +106,7 @@ public class CloseShooterTest extends OpMode {
         //set hardware map names (aka what the controller understands)
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         transfer = hardwareMap.get(DcMotorEx.class, "transfer");
+
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         transfer.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -132,6 +122,7 @@ public class CloseShooterTest extends OpMode {
         rightOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         servo = hardwareMap.get(Servo.class, "Axon");
+        servo2 = hardwareMap.get(Servo.class, "Axon2");
     }
     @Override
     public void start() {
@@ -186,10 +177,12 @@ public class CloseShooterTest extends OpMode {
 
     public void shootTest() {
         servo.setPosition(servoPos);
+        servo2.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         leftOuttake.setVelocity(ticksPerSecond);
         rightOuttake.setVelocity(ticksPerSecond);
+
         /*
         boolean aPressed = gamepad1.left_bumper;
 

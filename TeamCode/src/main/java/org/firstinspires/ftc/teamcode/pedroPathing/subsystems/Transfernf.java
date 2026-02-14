@@ -18,17 +18,20 @@ public class Transfernf implements Subsystem {
     public MotorEx transfer;
 
     public Command out() {
-        return new SetPower(transfer, -0.9);
+        return new SetPower(transfer, -0.92);
     }
     public Command outSlow() {
         return new SetPower(transfer, -0.6);
     }
 
-    public Command gateIntake() {
+    public Command farTransfer() {
         return new SequentialGroup(
-                new SetPower(transfer, -0.2),
+                new SetPower(transfer, -0.6),
                 new Delay(0.2),
-                new SetPower(transfer, -0.15)
+                new SetPower(transfer, -0.6),
+                new Delay(0.2),
+                new SetPower(transfer, -0.6),
+                new Delay(0.2)
         );
     }
 

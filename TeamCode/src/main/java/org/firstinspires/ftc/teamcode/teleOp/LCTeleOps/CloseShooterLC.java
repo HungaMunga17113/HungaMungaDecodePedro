@@ -1,14 +1,14 @@
-package org.firstinspires.ftc.teamcode.teleOp;
+package org.firstinspires.ftc.teamcode.teleOp.LCTeleOps;
 
-
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,22 +16,21 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.pedroPathing.EndPose;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.pedropathing.paths.PathChain;
+
+
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.pedroPathing.EndPose;
+import org.firstinspires.ftc.teamcode.teleOp.V2IntakeShooterTest;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @Configurable
 @TeleOp
-public class MyMomsKindaHomeless extends OpMode {
+public class CloseShooterLC extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
     private Follower follower;
     //Sloth
@@ -45,10 +44,10 @@ public class MyMomsKindaHomeless extends OpMode {
     (Button) Initialize Period, before you press start on your program.
      */
     ElapsedTime transferTime = new ElapsedTime();
-    public static double ticksPerSecond = 0;
+    public static double ticksPerSecond = 1277;
     //1500 is far
     //1250 is close
-    public static double servoPos = 0.395;
+    public static double servoPos = 0.552;
     //0.335 is far
     //0.393 is close
     public static double minimum = 0;
@@ -63,7 +62,7 @@ public class MyMomsKindaHomeless extends OpMode {
     double minHood = 0.55;
     private Supplier<PathChain> pathChain;
 
-    static final double targetX = 0;
+    static final double targetX = 144;
     static final double targetY = 144;
     double minVelocity = 1005;
     double maxVelocity = 1615;
@@ -72,53 +71,63 @@ public class MyMomsKindaHomeless extends OpMode {
 
     double minDistance = 30.941125497;
     double maxDistance = 148;
-    //160
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.085, 14.6);
-    //465, 0.0001, 0.05, 12.3
-    @Override
-    public void init() {
-        follower = Constants.createFollower(hardwareMap);
-        //follower.setStartingPose(endPose == null ? new Pose() : endPose);
-        //follower.setPose(new Pose(EndPose.lastX, EndPose.lastY, EndPose.lastHeading));
-        follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(EndPose.endPose);
-        follower.update();
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+    public static double transferPower = 1;
+    //1 is close
+    //0.85 is far
+    boolean lastA = false;
 
-        leftFront  = hardwareMap.get(DcMotor.class, "leftFront");
-        leftBack   = hardwareMap.get(DcMotor.class, "leftBack");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightBack  = hardwareMap.get(DcMotor.class, "rightBack");
-
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
-        //set hardware map names (aka what the controller understands)
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
-        transfer = hardwareMap.get(DcMotorEx.class, "transfer");
-
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
-        transfer.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        //0.44 low limit
-        //0.1 high limit
-        leftOuttake = hardwareMap.get(DcMotorEx.class, "leftOuttake");
-        rightOuttake = hardwareMap.get(DcMotorEx.class, "rightOuttake");
-
-        leftOuttake.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightOuttake.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        leftOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        servo = hardwareMap.get(Servo.class, "Axon");
+    public enum shooterStates {
+        CLOSE,
+        FAR
     }
+    private shooterStates mode = shooterStates.CLOSE;
+
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(333.2, 0, 0.07, 14.6);
+//450, 0, 0.012, 11.7
+@Override
+public void init() {
+    follower = Constants.createFollower(hardwareMap);
+    //follower.setStartingPose(endPose == null ? new Pose() : endPose);
+    //follower.setPose(new Pose(EndPose.lastX, EndPose.lastY, EndPose.lastHeading));
+    follower = Constants.createFollower(hardwareMap);
+    follower.setStartingPose(EndPose.endPose);
+    follower.update();
+    telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+    leftFront  = hardwareMap.get(DcMotor.class, "leftFront");
+    leftBack   = hardwareMap.get(DcMotor.class, "leftBack");
+    rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+    rightBack  = hardwareMap.get(DcMotor.class, "rightBack");
+
+    leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+    rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+    leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+    rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
+    //set hardware map names (aka what the controller understands)
+    intake = hardwareMap.get(DcMotorEx.class, "intake");
+    transfer = hardwareMap.get(DcMotorEx.class, "transfer");
+
+    intake.setDirection(DcMotorSimple.Direction.FORWARD);
+    transfer.setDirection(DcMotorSimple.Direction.REVERSE);
+
+    //0.44 low limit
+    //0.1 high limit
+    leftOuttake = hardwareMap.get(DcMotorEx.class, "leftOuttake");
+    rightOuttake = hardwareMap.get(DcMotorEx.class, "rightOuttake");
+
+    leftOuttake.setDirection(DcMotorSimple.Direction.REVERSE);
+    rightOuttake.setDirection(DcMotorSimple.Direction.FORWARD);
+
+    leftOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    rightOuttake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    servo = hardwareMap.get(Servo.class, "Axon");
+}
     @Override
     public void start() {
         follower.startTeleopDrive(true);
@@ -137,7 +146,7 @@ public class MyMomsKindaHomeless extends OpMode {
         double alignX = targetX + robotX;
         double alignY = targetY - robotY;
         double angle = Math.atan(alignX/alignY);
-        double turnTowards =  88.5+Math.toDegrees(angle);
+        double turnTowards =  1+Math.toDegrees(angle);
         if (!automatedDrive) {
             //Make the last parameter false for field-centric
             //In case the drivers want to use a "slowMode" you can scale the vectors
@@ -149,6 +158,7 @@ public class MyMomsKindaHomeless extends OpMode {
                     true // Robot Centric
             );
         }
+        /*
         //Automated PathFollowing
         if (gamepad1.a) {
             pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
@@ -163,51 +173,71 @@ public class MyMomsKindaHomeless extends OpMode {
             follower.startTeleopDrive();
             automatedDrive = false;
         }
+
+         */
     }
 
+
+
     public void shootTest() {
-        double robotX = follower.getPose().getX();
-        double robotY = follower.getPose().getY();
-        double dx = targetX - robotX;
-        double dy = targetY - robotY;
-        double distance = Math.hypot(dx, dy);
-        double transferPower = Range.clip(
-                minTransfer +
-                        (distance - minDistance) * (maxTransfer - minTransfer) / (maxDistance - minDistance),
-                minTransfer,
-                maxTransfer
-        );
-
-
-        double hoodPosition = Range.clip(
-                maxHood -
-                        (distance - minDistance) * (maxHood - minHood) / (maxDistance - minDistance),
-                minHood,
-                maxHood
-        );
-
-        servo.setPosition(hoodPosition);
-
-        double shooterVelocity = Range.clip(
-                minVelocity +
-                        (distance - minDistance) * (maxVelocity - minVelocity) / (maxDistance - minDistance),
-                minVelocity,
-                maxVelocity
-        );
-
-        /*
-        double shooterVelocity =
-                0.8 * distance * distance +
-                        20 * distance +
-                        1600;
-         */
-
-
+        servo.setPosition(servoPos);
         leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
         rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
-        leftOuttake.setVelocity(shooterVelocity);
-        rightOuttake.setVelocity(shooterVelocity);
+        leftOuttake.setVelocity(ticksPerSecond);
+        rightOuttake.setVelocity(ticksPerSecond);
+        /*
+        boolean aPressed = gamepad1.left_bumper;
 
+        if (aPressed && !lastA) {
+            if (mode == shooterStates.CLOSE) {
+                mode = shooterStates.FAR;
+            } else {
+                mode = shooterStates.CLOSE;
+            }
+        }
+
+        lastA = aPressed;
+
+        switch (mode) {
+            case CLOSE:
+                ticksPerSecond = 1277;
+                servoPos = 0.5745;
+                minimum = 0;
+
+                servo.setPosition(servoPos);
+                leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
+                rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
+                leftOuttake.setVelocity(ticksPerSecond);
+                rightOuttake.setVelocity(ticksPerSecond);
+                break;
+
+            case FAR:
+                ticksPerSecond = 1525;
+                servoPos = 0.56;
+                minimum = 1505;
+
+                servo.setPosition(servoPos);
+                leftOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
+                rightOuttake.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
+                leftOuttake.setVelocity(ticksPerSecond);
+                rightOuttake.setVelocity(ticksPerSecond);
+                break;
+        }
+
+         */
+        /*
+        if (gamepad1.b){
+            ticksPerSecond = 200;
+        } else if (gamepad1.a){
+            ticksPerSecond = 900;
+        } else {
+            ticksPerSecond = 1200;
+        }
+        if (gamepad1.left_bumper) {
+            servoPos = 0.5;
+        } else {
+            servoPos = 0.35;
+        }*/
         double intakePower = 1;
         if (gamepad1.right_trigger > 0.15) {
             intake.setPower(intakePower);
@@ -229,12 +259,6 @@ public class MyMomsKindaHomeless extends OpMode {
             transfer.setPower(-transferPower);
         } else {
             transfer.setPower(0);
-
-            if (shooterVelocity>=1360) {
-                minimum = shooterVelocity-25;
-            } else {
-                minimum = 0;
-            }
         }
         telemetry.addData("Ticks/s", ticksPerSecond);
         telemetry.addData("Left Velocity", leftOuttake.getVelocity());
@@ -242,10 +266,4 @@ public class MyMomsKindaHomeless extends OpMode {
         telemetry.addData("Error", ticksPerSecond-leftOuttake.getVelocity());
         telemetry.update();
     }
-    public void onStop() {
-        EndPose.endPose = follower().getPose();
-        EndPose.lastX = follower().getPose().getX();
-        EndPose.lastY = follower().getPose().getY();
-        EndPose.lastHeading = follower().getHeading();    }
 }
-

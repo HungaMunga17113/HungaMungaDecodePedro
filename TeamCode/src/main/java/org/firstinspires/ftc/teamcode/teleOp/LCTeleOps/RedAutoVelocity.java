@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleOp;
+package org.firstinspires.ftc.teamcode.teleOp.LCTeleOps;
 
 
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 
 @Configurable
 @TeleOp
-public class RedSideOilUpTheMotors extends OpMode {
+public class RedAutoVelocity extends OpMode {
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
     private Follower follower;
     //Sloth
@@ -54,16 +54,16 @@ public class RedSideOilUpTheMotors extends OpMode {
     public static double minimum = 0;
     //0 is close
     //1480 is far
-    public static double transferPower = 0.775;
+    public static double transferPower = 1;
     //1 is close
     //0.85 is far
-    double maxHood = 0.76;
-    double minHood = 0.55;
+    double maxHood = 0.58;
+    double minHood = 0.54;
     private Supplier<PathChain> pathChain;
 
     static final double targetX = 144;
     static final double targetY = 144;
-    double minVelocity = 1005;
+    double minVelocity = 1215;
     double maxVelocity = 1615;
     double maxTransfer = 1;
     double minTransfer = 0.82;
@@ -71,7 +71,7 @@ public class RedSideOilUpTheMotors extends OpMode {
 
     double minDistance = 33.941125497;
     double maxDistance = 148;
-    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.085, 14.6);
+    public static PIDFCoefficients coeffs = new PIDFCoefficients(333, 0, 0.1, 14.6);
     @Override
     public void init() {
         follower = Constants.createFollower(hardwareMap);
@@ -148,17 +148,17 @@ public class RedSideOilUpTheMotors extends OpMode {
         //Automated PathFollowing
         if (gamepad1.a) {
             pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
-                    .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX(), follower.getPose().getY()-0.01))))
+                    .addPath(new Path(new BezierLine(follower::getPose, new Pose(follower.getPose().getX()+1, follower.getPose().getY()+1))))
                     .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(turnTowards), 0.8))
                     .build();
             follower.followPath(pathChain.get());
             automatedDrive = true;
-        }
-        //Stop automated following if the follower is done
-        if (automatedDrive && (gamepad1.bWasPressed() || !follower.isBusy())) {
+        } else {
             follower.startTeleopDrive();
             automatedDrive = false;
         }
+        //Stop automated following if the follower is done
+
     }
 
     public void shootTest() {
@@ -167,13 +167,14 @@ public class RedSideOilUpTheMotors extends OpMode {
         double dx = targetX - robotX;
         double dy = targetY - robotY;
         double distance = Math.hypot(dx, dy);
+        /*
         double transferPower = Range.clip(
                 maxTransfer -
                         (distance - minDistance) * (maxTransfer - minTransfer) / (maxDistance - minDistance),
                 minTransfer,
                 maxTransfer
         );
-
+*/
         double hoodPosition = Range.clip(
                 maxHood -
                         (distance - minDistance) * (maxHood - minHood) / (maxDistance - minDistance),
@@ -221,13 +222,16 @@ public class RedSideOilUpTheMotors extends OpMode {
 
         } else if (gamepad1.y) {
             transfer.setPower(-transferPower);
+
         } else {
             transfer.setPower(0);
 
-            if (shooterVelocity>=1360) {
-                minimum = shooterVelocity-25;
-            } else {
-                minimum = 0;
+            if (!gamepad1.right_bumper) {
+                if (shooterVelocity >= 1360) {
+                    minimum = shooterVelocity - 25;
+                } else {
+                    minimum = 0;
+                }
             }
         }
         telemetry.addData("Ticks/s", ticksPerSecond);

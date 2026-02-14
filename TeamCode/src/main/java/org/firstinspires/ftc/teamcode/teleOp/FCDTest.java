@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import java.util.concurrent.TimeUnit;
 
 @Disabled
-@TeleOp(name = "FCD Test")
+@TeleOp(name = "Drivetrain Code")
 public class FCDTest extends OpMode {
 
     Deadline gamepadRateLimit = new Deadline(250, TimeUnit.MILLISECONDS);
